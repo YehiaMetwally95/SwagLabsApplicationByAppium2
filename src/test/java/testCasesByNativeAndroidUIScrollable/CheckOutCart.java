@@ -17,8 +17,6 @@ import java.sql.SQLException;
 import static utils.JDBCManager.*;
 import static utils.RandomDataGenerator.generateInteger;
 import static utils.RandomDataGenerator.generateName;
-import static utils.W3CTouchActions.Direction.DOWN;
-import static utils.W3CTouchActions.Direction.UP;
 
 @Epic("SwagLabs Android App")
 @Feature("Checkout")

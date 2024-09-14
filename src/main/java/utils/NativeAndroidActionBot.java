@@ -16,7 +16,6 @@ import static org.openqa.selenium.interactions.PointerInput.Kind.TOUCH;
 import static org.openqa.selenium.interactions.PointerInput.Origin.viewport;
 import static utils.PropertiesManager.getPropertiesValue;
 import static utils.RandomDataGenerator.generateInteger;
-import static utils.Screenshot.takeElementScreenshot;
 import static utils.Waits.getFluentWait;
 
 public class NativeAndroidActionBot {
@@ -31,7 +30,7 @@ public class NativeAndroidActionBot {
         HORIZONTAL,VERTICAL
     }
     public enum LocatorType {
-        TEXT,RESOURCE_ID,ACCESSIBILITY_ID
+        TEXT,RESOURCE_ID,ACCESSIBILITY_ID,ClASS_NAME
     }
 
     public NativeAndroidActionBot(AppiumDriver driver)
@@ -39,20 +38,11 @@ public class NativeAndroidActionBot {
         this.driver = driver;
     }
 
-
+    //Scroll Into Screen to Button or Link in a given direction then Press on it Using locator as a text and type of By
     public NativeAndroidActionBot tab (LocatorType type, String locator, ScrollDirection direction)
     {
         getFluentWait(driver).until(f->
         {
-            System.out.println("Clicking On " + driver.findElement(AppiumBy.androidUIAutomator(
-                    getChildTextQuery(type,locator,direction,"TextView"))).getText()+" Button");
-            try {
-                takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                        getLocatorQuery(type,locator,direction))),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
                     getLocatorQuery(type,locator,direction)))).click().perform();
             return true;
@@ -60,35 +50,22 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then Press on it Using By locator
     public NativeAndroidActionBot tab (By locator)
     {
         getFluentWait(driver).until(f->
         {
-            try {
-                takeElementScreenshot(driver,driver.findElement(locator),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             new Actions(driver).moveToElement(driver.findElement(locator)).click().perform();
             return true;
         });
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then Long Press on it Using locator as a text and type of By
     public NativeAndroidActionBot longTab (LocatorType type, String locator, ScrollDirection direction)
     {
         getFluentWait(driver).until(f->
         {
-            System.out.println("Long Clicking On " + driver.findElement(AppiumBy.androidUIAutomator(
-                    getChildTextQuery(type,locator,direction,"TextView"))).getText()+" Button");
-            try {
-                takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                        getLocatorQuery(type,locator,direction))),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
                     getLocatorQuery(type,locator,direction)))).clickAndHold().perform();
             return true;
@@ -96,35 +73,22 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then Long Press on it Using By locator
     public NativeAndroidActionBot longTab (By locator)
     {
         getFluentWait(driver).until(f->
         {
-            try {
-                takeElementScreenshot(driver,driver.findElement(locator),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             new Actions(driver).moveToElement(driver.findElement(locator)).clickAndHold().perform();
             return true;
         });
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then Double Press on it Using locator as a text and type of By
     public NativeAndroidActionBot doubleTab (LocatorType type, String locator, ScrollDirection direction)
     {
         getFluentWait(driver).until(f->
         {
-            System.out.println("Double Clicking On " + driver.findElement(AppiumBy.androidUIAutomator(
-                    getChildTextQuery(type,locator,direction,"TextView"))).getText()+" Button");
-            try {
-                takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                        getLocatorQuery(type,locator,direction))),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
                     getLocatorQuery(type,locator,direction)))).doubleClick().perform();
             return true;
@@ -132,22 +96,18 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then Double Press on it Using By locator
     public NativeAndroidActionBot doubleTab (By locator)
     {
         getFluentWait(driver).until(f->
         {
-            try {
-                takeElementScreenshot(driver,driver.findElement(locator),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             new Actions(driver).moveToElement(driver.findElement(locator)).doubleClick().perform();
             return true;
         });
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then type text on it Using locator as a text and type of By
     public NativeAndroidActionBot type (LocatorType type, String locator, ScrollDirection direction, String text) throws IOException {
         getFluentWait(driver).until(f->
         {
@@ -157,22 +117,20 @@ public class NativeAndroidActionBot {
                     getLocatorQuery(type,locator,direction))).sendKeys(text);
             return true;
         });
-        System.out.println("Typing " + text);
-        takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                getLocatorQuery(type,locator,direction))),textBoxesPath,generateInteger());        return this;
+        return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then type text on it Using By locator
     public NativeAndroidActionBot type (By locator,String text) throws IOException {
         Waits.getFluentWait(driver).until(f -> {
             driver.findElement(locator).clear();
             driver.findElement(locator).sendKeys(text);
             return true;
         });
-        System.out.println("Typing " + text);
-        takeElementScreenshot(driver,locator,textBoxesPath,generateInteger());
         return this;
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then read text from it Using locator as a text and type of By
     public String readText (LocatorType type,String locator,ScrollDirection direction) throws IOException {
         getFluentWait(driver).until(f->
         {
@@ -180,12 +138,11 @@ public class NativeAndroidActionBot {
                     getLocatorQuery(type,locator,direction))).getText();
             return true;
         });
-        takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                getLocatorQuery(type,locator,direction))),retrievedTextPath,generateInteger());
         return driver.findElement(AppiumBy.androidUIAutomator(
                 getLocatorQuery(type,locator,direction))).getText();
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then read the text in its child Class "Can be TextView or EditText"
     public String readChildText (LocatorType type,String locator,ScrollDirection direction,String widgetClassName) throws IOException {
         getFluentWait(driver).until(f->
         {
@@ -193,21 +150,20 @@ public class NativeAndroidActionBot {
                     getChildTextQuery(type,locator,direction,widgetClassName))).getText();
             return true;
         });
-        takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                getChildTextQuery(type,locator,direction,"TextView"))),retrievedTextPath,generateInteger());
         return driver.findElement(AppiumBy.androidUIAutomator(
                 getChildTextQuery(type,locator,direction,widgetClassName))).getText();
     }
 
+    //Scroll Into Screen to Button or Link in a given direction then read text from it Using By locator
     public String readText (By locator) throws IOException {
         getFluentWait(driver).until(f -> {
             driver.findElement(locator).getText();
             return true;
         });
-        takeElementScreenshot(driver,locator,retrievedTextPath,generateInteger());
         return driver.findElement(locator).getText().replace("\n","");
     }
 
+    //Scroll Into Screen till reach a Button or Link in a given direction
     public NativeAndroidActionBot swipeIntoScreen (LocatorType type, String targetLocator, ScrollDirection direction)
     {
         getFluentWait(driver).until(f->
@@ -219,6 +175,7 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into an Element till reach a Button or Link in a given direction
     public NativeAndroidActionBot swipeIntoElement(LocatorType scrollableType, String scrollableLocator, LocatorType targetType, String targetLocator, ScrollDirection direction)
     {
         getFluentWait(driver).until(f->
@@ -230,18 +187,13 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into an Element till reach a Button or Link in a given direction then click on it
     public NativeAndroidActionBot swipeIntoElementAndTap(LocatorType scrollableType, String scrollableLocator, LocatorType targetType, String targetLocator, ScrollDirection direction)
     {
         getFluentWait(driver).until(f->
         {
-            System.out.println("Clicking On " + driver.findElement(AppiumBy.androidUIAutomator(
-                    getChildTextQuery(targetType,targetLocator,direction,"TextView"))).getText()+" Button");
-            try {
-                takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                        getLocatorQuery(targetType,targetLocator,direction))),pressedButtonsPath,generateInteger());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            driver.findElement(AppiumBy.androidUIAutomator(
+                    getLocatorQuery(scrollableType,scrollableLocator,targetType,targetLocator,direction)));
 
             new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
                     getLocatorQuery(scrollableType,scrollableLocator,targetType,targetLocator,direction)))).click().perform();
@@ -250,6 +202,7 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into an Element till reach a Button or Link in a given direction then type on it
     public NativeAndroidActionBot swipeIntoElementAndType(LocatorType scrollableType, String scrollableLocator, LocatorType targetType, String targetLocator, ScrollDirection direction, String text) throws IOException {
         getFluentWait(driver).until(f->
         {
@@ -259,12 +212,10 @@ public class NativeAndroidActionBot {
                     getLocatorQuery(scrollableType,scrollableLocator,targetType,targetLocator,direction)))).sendKeys(text).perform();
             return true;
         });
-        System.out.println("Typing " + text);
-        takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                getLocatorQuery(targetType,targetLocator,direction))),textBoxesPath,generateInteger());
         return this;
     }
 
+    //Scroll Into an Element till reach a Button or Link in a given direction then read text from it
     public String swipeIntoElementAndReadText(LocatorType scrollableType, String scrollableLocator, LocatorType targetType, String targetLocator, ScrollDirection direction) throws IOException {
         getFluentWait(driver).until(f->
         {
@@ -272,12 +223,11 @@ public class NativeAndroidActionBot {
                     getLocatorQuery(scrollableType,scrollableLocator,targetType,targetLocator,direction))).getText();
             return true;
         });
-        takeElementScreenshot(driver,driver.findElement(AppiumBy.androidUIAutomator(
-                getLocatorQuery(targetType,targetLocator,direction))),retrievedTextPath,generateInteger());
         return driver.findElement(AppiumBy.androidUIAutomator(
                 getLocatorQuery(scrollableType,scrollableLocator,targetType,targetLocator,direction))).getText();
     }
 
+    //Scroll Into Screen in a given direction till reach a Button then zoom it in
     public NativeAndroidActionBot zoomIn (LocatorType type, String locator, ScrollDirection direction, int distance)
     {
         getFluentWait(driver).until(f->
@@ -304,6 +254,7 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into Screen in a given direction till reach a Button then zoom it out
     public NativeAndroidActionBot zoomOut (LocatorType type, String locator, ScrollDirection direction, int distance)
     {
         getFluentWait(driver).until(f->
@@ -330,6 +281,7 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Scroll Into Screen in a given direction till reach a source Button then drag it then Scroll Into Screen in a given direction till reach the destination button to drop it
     public NativeAndroidActionBot dragAndDrop(LocatorType sourceLocatorType, String sourceLocator, ScrollDirection sourceDirection, LocatorType destinationLocatorType, String destinationLocator, ScrollDirection destinationDirection)
     {
         Waits.getFluentWait(driver).until(f-> {
@@ -345,6 +297,7 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Drag and drop an element on the view port without Scrolling
     public NativeAndroidActionBot dragAndDrop(By sourceLocator, By destinationLocator)
     {
         Waits.getFluentWait(driver).until(f-> {
@@ -358,6 +311,7 @@ public class NativeAndroidActionBot {
         return this;
     }
 
+    //Check if the element is displayed on the view port without Scrolling
     public boolean isElementDisplayed(By locator){
         try{
             Waits.getFluentWait(driver).until(f -> {
@@ -370,6 +324,7 @@ public class NativeAndroidActionBot {
         return true;
     }
 
+    //Check if the element present in the whole page by scrolling in a given direction (Up/Down or Left/Right)
     public boolean isElementPresent(LocatorType type,String locator,ScrollDirection direction)
     {
         try{
@@ -386,6 +341,7 @@ public class NativeAndroidActionBot {
         return true;
     }
 
+    //Get the Locator text that will be used in AppiumBy.AndroidUIAutomator to perform scrolling into screen to the target element locator before finding it
     private String getLocatorQuery(LocatorType type, String locator, ScrollDirection direction)
     {
         String query = null;
@@ -442,10 +398,28 @@ public class NativeAndroidActionBot {
                 break;
             }
 
+            case LocatorType.ClASS_NAME:
+            {
+                if(direction ==ScrollDirection.VERTICAL)
+                {
+                    query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(" +
+                            "new UiSelector().className(\"" + locator + "\"))";
+                }
+
+                else if(direction==ScrollDirection.HORIZONTAL)
+                {
+
+                    query = "new UiScrollable(new UiSelector()).setAsHorizontalList().scrollIntoView("
+                            + "new UiSelector().className(\"" + locator + "\"))";
+                }
+                break;
+            }
+
         }
         return query;
     }
 
+    //Get the Locator text that will be used in AppiumBy.AndroidUIAutomator to perform scrolling into a scrollable element to the target element locator before finding it
     private String getLocatorQuery(LocatorType scrollableType, String scrollableLocator, LocatorType targetType, String targetLocator, ScrollDirection direction)
     {
         String query = null;
@@ -457,18 +431,15 @@ public class NativeAndroidActionBot {
                 {
                     if(targetType==LocatorType.TEXT)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().textMatches(\".*"+scrollableLocator+"\")).textContains(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().textMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().textContains(\""+targetLocator+"\"))";
                     }
                     else if(targetType==LocatorType.ACCESSIBILITY_ID)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().textMatches(\".*"+scrollableLocator+"\")).description(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().textMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().description(\""+targetLocator+"\"))";
                     }
                     else if(targetType==LocatorType.RESOURCE_ID)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().textMatches(\".*"+scrollableLocator+"\")).resourceId(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().textMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().resourceId(\""+targetLocator+"\"))";
                     }
                     break;
                 }
@@ -477,18 +448,15 @@ public class NativeAndroidActionBot {
                 {
                     if(targetType==LocatorType.TEXT)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().descriptionMatches(\".*"+scrollableLocator+"\")).textContains(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().descriptionMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().textContains(\""+targetLocator+"\"))";
                     }
                     else if(targetType==LocatorType.ACCESSIBILITY_ID)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().descriptionMatches(\".*"+scrollableLocator+"\")).description(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().descriptionMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().description(\""+targetLocator+"\"))";
                     }
                     else if(targetType==LocatorType.RESOURCE_ID)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().descriptionMatches(\".*"+scrollableLocator+"\")).resourceId(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().descriptionMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().resourceId(\""+targetLocator+"\"))";
                     }
                     break;
                 }
@@ -501,16 +469,32 @@ public class NativeAndroidActionBot {
                     }
                     else if(targetType==LocatorType.ACCESSIBILITY_ID)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().resourceIdMatches(\".*"+scrollableLocator+"\")).description(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().resourceIdMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().description(\""+targetLocator+"\"))";
                     }
                     else if(targetType==LocatorType.RESOURCE_ID)
                     {
-                        query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                                + "new UiSelector().resourceIdMatches(\".*"+scrollableLocator+"\")).resourceId(\"" + targetLocator + "\")";
+                        query = "new UiScrollable(new UiSelector().resourceIdMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().resourceId(\""+targetLocator+"\"))";
                     }
                     break;
                 }
+
+                case ClASS_NAME:
+                {
+                    if(targetType==LocatorType.TEXT)
+                    {
+                        query = "new UiScrollable(new UiSelector().classNameMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().textContains(\""+targetLocator+"\"))";
+                    }
+                    else if(targetType==LocatorType.ACCESSIBILITY_ID)
+                    {
+                        query = "new UiScrollable(new UiSelector().classNameMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().description(\""+targetLocator+"\"))";
+                    }
+                    else if(targetType==LocatorType.RESOURCE_ID)
+                    {
+                        query = "new UiScrollable(new UiSelector().classNameMatches(\".*"+scrollableLocator+"\").scrollable(true)).scrollIntoView(new UiSelector().resourceId(\""+targetLocator+"\"))";
+                    }
+                    break;
+                }
+
             }
         }
 
@@ -571,12 +555,31 @@ public class NativeAndroidActionBot {
                     }
                     break;
                 }
+
+                case ClASS_NAME:
+                {
+                    if(targetType==LocatorType.TEXT)
+                    {
+
+                        query = "new UiScrollable(new UiSelector().classNameMatches(\".*"+scrollableLocator+"\")).setAsHorizontalList().scrollIntoView(new UiSelector().textContains(\""+targetLocator+"\"))";
+                    }
+                    else if(targetType==LocatorType.ACCESSIBILITY_ID)
+                    {
+                        query = "new UiScrollable(new UiSelector().classNameMatches(\".*"+scrollableLocator+"\")).setAsHorizontalList().scrollIntoView(new UiSelector().description(\""+targetLocator+"\"))";
+                    }
+                    else if(targetType==LocatorType.RESOURCE_ID)
+                    {
+                        query = "new UiScrollable(new UiSelector().classNameMatches(\".*"+scrollableLocator+"\")).setAsHorizontalList().scrollIntoView(new UiSelector().resourceID(\""+targetLocator+"\"))";
+                    }
+                    break;
+                }
             }
         }
 
         return query;
     }
 
+    //Get the Locator text that will be used in AppiumBy.AndroidUIAutomator to perform scrolling into screen to the child class of the target element locator before finding it
     private String getChildTextQuery(LocatorType type, String locator, ScrollDirection direction,String widgetClassName)
     {
         String query = null;
@@ -633,10 +636,28 @@ public class NativeAndroidActionBot {
                 break;
             }
 
+            case LocatorType.ClASS_NAME:
+            {
+                if(direction ==ScrollDirection.VERTICAL)
+                {
+                    query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(" +
+                            "new UiSelector().className(\"" + locator + "\").childSelector(new UiSelector().className(android.widget."+widgetClassName+")))";
+                }
+
+                else if(direction==ScrollDirection.HORIZONTAL)
+                {
+
+                    query = "new UiScrollable(new UiSelector()).setAsHorizontalList.scrollIntoView(" +
+                            "new UiSelector().className(\"" + locator + "\").childSelector(new UiSelector().className(android.widget."+widgetClassName+")))";
+                }
+                break;
+            }
+
         }
         return query;
     }
 
+    //Build the sequence of swipe by one finger according to W3c Touch Actions
     private Sequence singleFingerSwipe(String fingerName, Point start , Point end)
     {
         PointerInput finger = new PointerInput(TOUCH,fingerName);
@@ -653,6 +674,7 @@ public class NativeAndroidActionBot {
         return sequence;
     }
 
+    //Get the Center Coordinate of the Element
     private Point getElementCenter (WebElement element) {
         Point location = element.getLocation ();
         Dimension size = element.getSize ();
@@ -661,6 +683,7 @@ public class NativeAndroidActionBot {
         return getCorrectedCoordinates (element, new Point (x, y));
     }
 
+    //Get the Center Coordinate of the Element and verify that it's not outside the screen
     private Point getCorrectedCoordinates (WebElement element, Point point) {
         Dimension screenSize = getScreenSize ();
         int x = point.getX ();
@@ -690,6 +713,7 @@ public class NativeAndroidActionBot {
         return new Point (x, y);
     }
 
+    //Get the Dimensions of Screen Size
     private Dimension getScreenSize () {
         return driver.manage ()
                 .window ()

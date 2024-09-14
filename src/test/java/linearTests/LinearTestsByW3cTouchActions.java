@@ -25,19 +25,19 @@ import static utils.NativeAndroidActionBot.ScrollDirection.*;
 public class LinearTestsByW3cTouchActions extends BaseTest {
 
     @Test
-    public void swipe() throws IOException, ParseException {
+    public void swipeIntoElementHorizontally() throws IOException, ParseException {
         W3CTouchActions action = new W3CTouchActions(driver);
 
         By viewsLocator = AppiumBy.accessibilityId("Views");
         By tabsLocator = AppiumBy.accessibilityId("Tabs");
         By scrollableLocator = AppiumBy.accessibilityId("5. Scrollable");
-        By swipedElementLocator = By.xpath("//android.widget.HorizontalScrollView");
+        By swipedElementLocator = By.xpath("//android.widget.TabWidget[@resource-id=\"android:id/tabs\"]");
         By TAB3Locator = AppiumBy.androidUIAutomator("new UiSelector().text(\"TAB 3\")");
         By TAB25Locator = AppiumBy.androidUIAutomator("new UiSelector().text(\"TAB 25\")");
         By textField = AppiumBy.xpath("//android.widget.FrameLayout[@resource-id='android:id/tabcontent']//android.widget.TextView");
 
         action.tab(viewsLocator)
-                .swipeIntoScreen(tabsLocator,DOWN)
+                .swipeIntoScreen(tabsLocator, DOWN)
                 .tab(tabsLocator)
                 .tab(scrollableLocator)
                 .swipeIntoElement(swipedElementLocator, LEFT, TAB25Locator)
@@ -64,28 +64,4 @@ public class LinearTestsByW3cTouchActions extends BaseTest {
                 .tab(groupsOption);
     }
 
-    @Test
-    public void alert() throws IOException, ParseException {
-        By app = AppiumBy.accessibilityId("App");
-        By alertDialogs = AppiumBy.accessibilityId("Alert Dialogs");
-        By ok_CanceldialogAlert = AppiumBy.accessibilityId("OK Cancel dialog with Holo Light theme");
-        By listDialog = AppiumBy.accessibilityId("List dialog");
-        By commandOne = AppiumBy.androidUIAutomator("new UiSelector().text(\"Command one\")");
-        By singleChoiceList =AppiumBy.accessibilityId("Single choice list");
-        By streetviewChoice = AppiumBy.androidUIAutomator("new UiSelector().text(\"Street view\")");
-
-        W3CTouchActions action = new W3CTouchActions(driver);
-        action.tab(app)
-                .tab(alertDialogs)
-                .tab(ok_CanceldialogAlert);
-        System.out.println(getTextInAlert(driver));
-        //acceptAlert(driver);
-
-        action.tab(singleChoiceList)
-                .tab(streetviewChoice);
-        //dismissAlert(driver);
-
-        action.tab(listDialog)
-                .tab(commandOne);
-    }
 }

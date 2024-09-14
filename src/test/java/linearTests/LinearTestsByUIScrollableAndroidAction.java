@@ -3,79 +3,68 @@ package linearTests;
 import io.appium.java_client.AppiumBy;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import testCasesByNativeAndroidUIScrollable.BaseTest;
 import utils.NativeAndroidActionBot;
-import utils.W3CTouchActions;
-
+import static utils.NativeAndroidActionBot.LocatorType.*;
+import static utils.NativeAndroidActionBot.ScrollDirection.*;
 import java.io.IOException;
 
-import static utils.AlertsActions.getTextInAlert;
-import static utils.W3CTouchActions.Direction.*;
-
+@Listeners(utils.TestNGListners.class)
 public class LinearTestsByUIScrollableAndroidAction extends BaseTest {
 
     @Test
-    public void swipe() throws IOException, ParseException {
+    public void swipeIntoElementHorizontally() throws IOException, ParseException {
         NativeAndroidActionBot action = new NativeAndroidActionBot(driver);
 
         By viewsLocator = AppiumBy.accessibilityId("Views");
         By tabsLocator = AppiumBy.accessibilityId("Tabs");
         By scrollableLocator = AppiumBy.accessibilityId("5. Scrollable");
-        By swipedElementLocator = By.xpath("//android.widget.HorizontalScrollView");
+        By swipedElementLocator = By.xpath("//android.widget.TabWidget[@resource-id=\"android:id/tabs\"]");
         By TAB3Locator = AppiumBy.androidUIAutomator("new UiSelector().text(\"TAB 3\")");
         By TAB25Locator = AppiumBy.androidUIAutomator("new UiSelector().text(\"TAB 25\")");
-        By textField = AppiumBy.xpath("//android.widget.FrameLayout[@resource-id='android:id/tabcontent']//android.widget.TextView");
+        By massageLocator = AppiumBy.xpath("//android.widget.FrameLayout[@resource-id='android:id/tabcontent']//android.widget.TextView");
 
-        action.tab(viewsLocator)
-                .tab(tabsLocator)
-                .tab(scrollableLocator)
-                .tab(TAB25Locator)
-                .tab(TAB3Locator);
-
-        Assert.assertTrue(action.readText(textField).contains("Tab 3"));
+        Assert.assertTrue(
+                action.tab(TEXT,"Views",VERTICAL)
+                        .tab(TEXT,"Tabs",VERTICAL)
+                        .tab(TEXT,"5. Scrollable",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"android:id/tabs",TEXT,"Tab 20",HORIZONTAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"android:id/tabs",TEXT,"Tab 3",HORIZONTAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"android:id/tabs",TEXT,"Tab 15",HORIZONTAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"android:id/tabs",TEXT,"Tab 6",HORIZONTAL)
+                        .readChildText(RESOURCE_ID,"android:id/tabcontent",VERTICAL,"TextView")
+                        .contains("Tab 6")
+        );
     }
 
     @Test
-    public void dropDown() throws IOException, ParseException {
-        By app = AppiumBy.accessibilityId("App");
-        By menu = AppiumBy.accessibilityId("Menu");
-        By inflate = AppiumBy.accessibilityId("Inflate from XML");
-        By spinner = AppiumBy.androidUIAutomator("new UiSelector().resourceId(\"io.appium.android.apis:id/spinner\")");
-        By groupsOption = AppiumBy.androidUIAutomator("new UiSelector().text(\"Groups\")");
+    public void swipeIntoElementVertically() throws IOException, ParseException {
+        NativeAndroidActionBot action = new NativeAndroidActionBot(driver);
 
-        W3CTouchActions action = new W3CTouchActions(driver);
-        action.tab(app)
-                .tab(menu)
-                .tab(inflate)
-                .tab(spinner)
-                .tab(groupsOption);
-    }
+        By viewsLocator = AppiumBy.accessibilityId("Views");
+        By tabsLocator = AppiumBy.accessibilityId("Splitting Touches across Views");
+        By swipedElementLocatorListTwo = By.xpath("//android.widget.ListView[@resource-id=\"io.appium.android.apis:id/list2\"]");
+        By swipedElementLocatorListOne = By.xpath("//android.widget.ListView[@resource-id=\"io.appium.android.apis:id/list1\"]");
+        By cellLocatorListTwo = AppiumBy.xpath("(//android.widget.TextView[@text=\"Abbaye du Mont des Cats\"])[2]");
+        By cellLocatorListOne = AppiumBy.xpath("(//android.widget.TextView[@text=\"Abbaye du Mont des Cats\"])[1]");
+        By massageLocator = AppiumBy.xpath("//android.widget.Toast");
 
-    @Test
-    public void alert() throws IOException, ParseException {
-        By app = AppiumBy.accessibilityId("App");
-        By alertDialogs = AppiumBy.accessibilityId("Alert Dialogs");
-        By ok_CanceldialogAlert = AppiumBy.accessibilityId("OK Cancel dialog with Holo Light theme");
-        By listDialog = AppiumBy.accessibilityId("List dialog");
-        By commandOne = AppiumBy.androidUIAutomator("new UiSelector().text(\"Command one\")");
-        By singleChoiceList =AppiumBy.accessibilityId("Single choice list");
-        By streetviewChoice = AppiumBy.androidUIAutomator("new UiSelector().text(\"Street view\")");
-
-        W3CTouchActions action = new W3CTouchActions(driver);
-        action.tab(app)
-                .tab(alertDialogs)
-                .tab(ok_CanceldialogAlert);
-        System.out.println(getTextInAlert(driver));
-        //acceptAlert(driver);
-
-        action.tab(singleChoiceList)
-                .tab(streetviewChoice);
-        //dismissAlert(driver);
-
-        action.tab(listDialog)
-                .tab(commandOne);
+        Assert.assertTrue(
+                action.tab(TEXT,"Views",VERTICAL)
+                        .tab(TEXT,"Splitting Touches across Views",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list2",TEXT,"Caboc",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list2",TEXT,"Aragon",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list2",TEXT,"Baladi",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list2",TEXT,"Aragon",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list1",TEXT,"Caboc",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list1",TEXT,"Acorn",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list1",TEXT,"Baladi",VERTICAL)
+                        .swipeIntoElementAndTap(RESOURCE_ID,"io.appium.android.apis:id/list1",TEXT,"Acorn",VERTICAL)
+                        .readText(massageLocator)
+                        .contains("Acorn")
+        );
     }
 }
