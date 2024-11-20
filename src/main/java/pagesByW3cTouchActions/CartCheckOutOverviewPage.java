@@ -4,14 +4,11 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
-import utils.W3CTouchActions;
+import yehiaEngine.assertions.CustomAssert;
+import yehiaEngine.assertions.CustomSoftAssert;
+import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
-import java.io.IOException;
-
-import static utils.CustomSoftAssert.softAssert;
-import static utils.W3CTouchActions.Direction.*;
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.LEFT;
 
 public class CartCheckOutOverviewPage extends HomePage{
     //Variables
@@ -48,7 +45,7 @@ public class CartCheckOutOverviewPage extends HomePage{
     @Step("Return Back to Products Page")
     public ProductsPage returnBackToProductsPage()
     {
-        action.tab(backToProductsButton);
+        action.tap(backToProductsButton);
         return new ProductsPage(driver);
     }
 
@@ -56,15 +53,14 @@ public class CartCheckOutOverviewPage extends HomePage{
     public CartCheckOutOverviewPage removeProductFromCartBySwipe(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoElement(productItem,LEFT,removeFromCartSwipe)
-                .tab(removeFromCartSwipe);
+        action.tap(removeFromCartSwipe,LEFT,productItem);
         return this;
     }
 
     @Step("Finish Cart Checkout")
     public CartCheckOutCompletePage finishCartCheckOut()
     {
-        action.tab(finishButton);
+        action.tap(finishButton);
         return new CartCheckOutCompletePage(driver);
     }
 
@@ -73,7 +69,7 @@ public class CartCheckOutOverviewPage extends HomePage{
     public CartCheckOutOverviewPage assertProductIsAddedToCart(String productName)
     {
         defineLocatorsByProductName(productName);
-        Assert.assertTrue(action.isElementPresent(productItem,DOWN)||action.isElementPresent(productItem,UP));
+        CustomAssert.assertTrue(action.isElementDisplayed(productItem));
         return this;
     }
 
@@ -81,54 +77,63 @@ public class CartCheckOutOverviewPage extends HomePage{
     public CartCheckOutOverviewPage assertProductIsRemovedFromCart(String productName)
     {
         defineLocatorsByProductName(productName);
-        Assert.assertFalse(action.isElementPresent(productItem,DOWN)||action.isElementPresent(productItem,UP));
+        CustomAssert.assertFalse(action.isElementDisplayed(productItem));
+        return this;
+    }
+
+    @Step("Verify Product Info")
+    public CartCheckOutOverviewPage verifyProductInfo(String productName,String price,String quantity,String description)
+    {
+        verifyProductPrice(productName,price)
+                .verifyProductQuantity(productName,quantity)
+                .verifyProductDescription(productName,description);
         return this;
     }
 
     @Step("Verify Product Price")
-    public CartCheckOutOverviewPage verifyProductPrice(String productName,String price) throws IOException {
+    private CartCheckOutOverviewPage verifyProductPrice(String productName,String price) {
         defineLocatorsByProductName(productName);
         String actualPrice = action.readText(productPriceLocator).split("\\$",2)[1];
-        softAssert.assertEquals(actualPrice,price);
+        CustomSoftAssert.assertEquals(actualPrice,price);
         return this;
     }
 
     @Step("Verify Product Quantity")
-    public CartCheckOutOverviewPage verifyProductQuantity(String productName,String quantity) throws IOException {
+    private CartCheckOutOverviewPage verifyProductQuantity(String productName,String quantity) {
         defineLocatorsByProductName(productName);
-        softAssert.assertEquals(action.readText(productQuantityLocator),quantity);
+        CustomSoftAssert.assertEquals(action.readText(productQuantityLocator),quantity);
         return this;
     }
 
     @Step("Verify Product Description")
-    public CartCheckOutOverviewPage verifyProductDescription(String productName,String description) throws IOException {
+    private CartCheckOutOverviewPage verifyProductDescription(String productName,String description) {
         defineLocatorsByProductName(productName);
-        softAssert.assertEquals(action.readText(productDescriptionLocator),description);
+        CustomSoftAssert.assertEquals(action.readText(productDescriptionLocator),description);
         return this;
     }
 
     @Step("Verify Total Price of Products")
-    public CartCheckOutOverviewPage verifyTotalPriceOfProducts(String totalPrice) throws IOException {
-        String actualTotalPrice = action.readText(totalPriceLocator).split("\\$",2)[1];
-        softAssert.assertEquals(actualTotalPrice,totalPrice);
+    public CartCheckOutOverviewPage verifyTotalPriceOfProducts(double totalPrice) {
+        double actualTotalPrice = Double.parseDouble(action.readText(totalPriceLocator).split("\\$",2)[1]);
+        CustomSoftAssert.assertEquals(actualTotalPrice,totalPrice);
         return this;
     }
 
     @Step("Verify the Payment Info")
-    public CartCheckOutOverviewPage verifyPaymentInfo(String paymentInfo) throws IOException {
-        softAssert.assertEquals(action.readText(paymentInfoLocator),paymentInfo);
+    public CartCheckOutOverviewPage verifyPaymentInfo(String paymentInfo){
+        CustomSoftAssert.assertEquals(action.readText(paymentInfoLocator),paymentInfo);
         return this;
     }
 
     @Step("Verify the Shipping Method")
-    public CartCheckOutOverviewPage verifyShippingMethod(String shippingMethod) throws IOException {
-        softAssert.assertEquals(action.readText(shippingInfoLocator),shippingMethod);
+    public CartCheckOutOverviewPage verifyShippingMethod(String shippingMethod) {
+        CustomSoftAssert.assertEquals(action.readText(shippingInfoLocator),shippingMethod);
         return this;
     }
 
     //Scrolling
     @Step("Scroll to Product")
-    public CartCheckOutOverviewPage scrollToProduct(String productName, W3CTouchActions.Direction direction)
+    public CartCheckOutOverviewPage scrollToProduct(String productName, Direction direction)
     {
         defineLocatorsByProductName(productName);
         action.swipeIntoScreen(productItem,direction);
@@ -136,35 +141,35 @@ public class CartCheckOutOverviewPage extends HomePage{
     }
 
     @Step("Scroll to Cancel Button")
-    public CartCheckOutOverviewPage scrollToCancelButton(W3CTouchActions.Direction direction)
+    public CartCheckOutOverviewPage scrollToCancelButton(Direction direction)
     {
         action.swipeIntoScreen(backToProductsButton,direction);
         return this;
     }
 
     @Step("Scroll to Finish Button")
-    public CartCheckOutOverviewPage scrollToFinishButton(W3CTouchActions.Direction direction)
+    public CartCheckOutOverviewPage scrollToFinishButton(Direction direction)
     {
         action.swipeIntoScreen(finishButton,direction);
         return this;
     }
 
     @Step("Scroll to Total Price View")
-    public CartCheckOutOverviewPage scrollToTotalPriceView(W3CTouchActions.Direction direction)
+    public CartCheckOutOverviewPage scrollToTotalPriceView(Direction direction)
     {
         action.swipeIntoScreen(totalPriceLocator,direction);
         return this;
     }
 
     @Step("Scroll to Payment Info View")
-    public CartCheckOutOverviewPage scrollToPaymentInfoView(W3CTouchActions.Direction direction)
+    public CartCheckOutOverviewPage scrollToPaymentInfoView(Direction direction)
     {
         action.swipeIntoScreen(paymentInfoLocator,direction);
         return this;
     }
 
     @Step("Scroll to Shipping Info View")
-    public CartCheckOutOverviewPage scrollToShippingInfoView(W3CTouchActions.Direction direction)
+    public CartCheckOutOverviewPage scrollToShippingInfoView(Direction direction)
     {
         action.swipeIntoScreen(shippingInfoLocator,direction);
         return this;

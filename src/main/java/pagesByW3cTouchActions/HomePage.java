@@ -4,8 +4,7 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import utils.CustomSoftAssert;
-import utils.W3CTouchActions;
+import yehiaEngine.elementActions.W3CTouchActions;
 
 public class HomePage {
     //Variables
@@ -27,13 +26,13 @@ public class HomePage {
     @Step("Open Menu From Header")
     public MenuPage openMenuFromHeader()
     {
-        action.tab(menuIcon);
+        action.tap(menuIcon);
         return new MenuPage(driver);
     }
 
     public CartPage openCartPageFromHeader()
     {
-        action.tab(cartIcon);
+        action.tap(cartIcon);
         return new CartPage(driver);
     }
 
@@ -60,13 +59,4 @@ public class HomePage {
     {
 
     }
-
-    //Scrolling
-    @Step("Scroll Down to Footer")
-    public HomePage scrollToFooter()
-    {
-        action.swipeIntoScreen(footer, W3CTouchActions.Direction.DOWN);
-        return this;
-    }
-
 }

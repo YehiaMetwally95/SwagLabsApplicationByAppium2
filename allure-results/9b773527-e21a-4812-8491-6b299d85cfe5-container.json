@@ -1,0 +1,1 @@
+{"uuid":"9b773527-e21a-4812-8491-6b299d85cfe5","name":"testCases.Login","children":["a60f27a7-e809-4aa3-888f-de05a3630479"],"befores":[{"name":"clearOldFiles","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1725397322935,"stop":1725397322985}],"afters":[],"start":1725397322827,"stop":1725397339060}

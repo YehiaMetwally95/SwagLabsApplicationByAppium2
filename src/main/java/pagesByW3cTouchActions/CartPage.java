@@ -1,19 +1,19 @@
 package pagesByW3cTouchActions;
 
+import com.github.javafaker.App;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
-import utils.W3CTouchActions;
+import yehiaEngine.assertions.CustomAssert;
+import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
-import static utils.W3CTouchActions.Direction.*;
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.LEFT;
 
 public class CartPage extends HomePage{
 
     //Variables
-    String productName;
 
     //Locators
     By removeFromCartButton;
@@ -30,7 +30,6 @@ public class CartPage extends HomePage{
     //Actions
     private void defineLocatorsByProductName(String productName)
     {
-        this.productName = productName;
         productItem = AppiumBy.xpath("//*[@text='"+productName+"']/ancestor::*[@content-desc='test-Item']");
         removeFromCartButton = AppiumBy.xpath("//*[@text='"+productName+"']/parent::*/following-sibling::*[@content-desc='test-Price']//*[@content-desc='test-REMOVE']");
     }
@@ -40,7 +39,7 @@ public class CartPage extends HomePage{
     public CartPage removeProductFromCartByButton(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.tab(removeFromCartButton);
+        action.tap(removeFromCartButton);
         return this;
     }
 
@@ -48,22 +47,21 @@ public class CartPage extends HomePage{
     public CartPage removeProductFromCartBySwipe(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoElement(productItem,LEFT,removeFromCartSwipe)
-                .tab(removeFromCartSwipe);
+        action.tap(removeFromCartSwipe,LEFT,productItem);
         return this;
     }
 
     @Step("Proceed To Fill User Info")
     public CartCheckOutInfoPage proceedToFillUserInfo()
     {
-                action.tab(checkOutButton);
+        action.tap(checkOutButton,DOWN);
         return new CartCheckOutInfoPage(driver);
     }
 
     @Step("Return Back to Products Page")
     public ProductsPage returnBackToProductPage()
     {
-        action.tab(backToProductsButton);
+        action.tap(backToProductsButton,DOWN);
         return new ProductsPage(driver);
     }
 
@@ -72,7 +70,7 @@ public class CartPage extends HomePage{
     public CartPage assertProductIsAddedToCart(String productName)
     {
         defineLocatorsByProductName(productName);
-       Assert.assertTrue(action.isElementPresent(productItem,UP) || action.isElementPresent(productItem,DOWN));
+        CustomAssert.assertTrue(action.isElementDisplayed(productItem,DOWN));
         return this;
     }
 
@@ -80,13 +78,13 @@ public class CartPage extends HomePage{
     public CartPage assertProductIsRemovedFromCart(String productName)
     {
         defineLocatorsByProductName(productName);
-        Assert.assertFalse(action.isElementPresent(productItem,UP) || action.isElementPresent(productItem,DOWN));
+        CustomAssert.assertFalse(action.isElementDisplayed(productItem,DOWN));
         return this;
     }
 
     //Scrolling
     @Step("Scroll to Product")
-    public CartPage scrollToProduct(String productName, W3CTouchActions.Direction direction)
+    public CartPage scrollToProduct(String productName, Direction direction)
     {
         defineLocatorsByProductName(productName);
         action.swipeIntoScreen(removeFromCartButton,direction);
@@ -94,14 +92,14 @@ public class CartPage extends HomePage{
     }
 
     @Step("Scroll to Checkout Button")
-    public CartPage scrollToCheckoutButton(W3CTouchActions.Direction direction)
+    public CartPage scrollToCheckoutButton(Direction direction)
     {
         action.swipeIntoScreen(checkOutButton,direction);
         return this;
     }
 
     @Step("Scroll to Continue Button")
-    public CartPage scrollToContinueButton(W3CTouchActions.Direction direction)
+    public CartPage scrollToContinueButton(Direction direction)
     {
         action.swipeIntoScreen(backToProductsButton,direction);
         return this;

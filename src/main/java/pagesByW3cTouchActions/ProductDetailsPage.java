@@ -4,13 +4,8 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.asserts.SoftAssert;
-import utils.W3CTouchActions;
-
-import java.io.IOException;
-
-import static utils.CustomSoftAssert.softAssert;
-
+import yehiaEngine.assertions.CustomSoftAssert;
+import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
 public class ProductDetailsPage extends HomePage{
 
@@ -22,7 +17,8 @@ public class ProductDetailsPage extends HomePage{
     By productPicture = AppiumBy.accessibilityId("test-Image Container");
     By backToProductsButton = AppiumBy.accessibilityId("test-BACK TO PRODUCTS");
     By productPrice = AppiumBy.accessibilityId("test-Price");
-    By productDescription = AppiumBy.xpath("(//*[@content-desc='test-Description']//android.widget.TextView)[1]");
+    By productName = AppiumBy.xpath("(//*[@content-desc='test-Description']//android.widget.TextView)[1]");
+    By productDescription = AppiumBy.xpath("(//*[@content-desc='test-Description']//android.widget.TextView)[2]");
 
     //Constructor
     public ProductDetailsPage(AppiumDriver driver) {
@@ -33,15 +29,14 @@ public class ProductDetailsPage extends HomePage{
     @Step("Add Product To Cart By Button")
     public ProductDetailsPage addProductToCart()
     {
-        action.tab(addToCardButton);
+        action.tap(addToCardButton, Direction.DOWN);
         return this;
     }
 
     @Step("Remove Product From Cart By Button")
     public ProductDetailsPage removeProductFromCart()
     {
-        action.swipeIntoScreen(removeFromCartButton, W3CTouchActions.Direction.UP)
-        .tab(removeFromCartButton);
+        action.tap(removeFromCartButton, Direction.DOWN);
         return this;
     }
 
@@ -62,35 +57,35 @@ public class ProductDetailsPage extends HomePage{
     @Step("Return Back To Products Page")
     public ProductsPage returnBackToProductPage()
     {
-        action.tab(backToProductsButton);
+        action.tap(backToProductsButton);
         return new ProductsPage(driver);
     }
 
     //Validations
+    @Step("Verify Product Details")
+    public ProductDetailsPage verifyProductDetails(String name,String description,String price)
+    {
+        verifyProductName(name)
+                .verifyProductDescription(description)
+                .verifyProductPrice(price);
+        return this;
+    }
+
+    @Step("Verify Product Name")
+    private ProductDetailsPage verifyProductName(String name) {
+        CustomSoftAssert.assertEquals(action.readText(productName),name);
+        return this;
+    }
+
     @Step("Verify Product Description")
-    public ProductDetailsPage verifyProductDescription(String description) throws IOException {
-        action.swipeIntoScreen(productDescription, W3CTouchActions.Direction.UP);
-        softAssert.assertEquals(action.readText(productDescription),description);
+    private ProductDetailsPage verifyProductDescription(String description) {
+        CustomSoftAssert.assertEquals(action.readText(productDescription),description);
         return this;
     }
 
     @Step("Verify Product Price")
-    public ProductDetailsPage verifyProductPrice(String price) throws IOException {
-        action.swipeIntoScreen(productPrice, W3CTouchActions.Direction.UP);
-        softAssert.assertEquals(action.readText(productPrice),price);
-        return this;
-    }
-
-    //Scrolling
-    @Step("Scroll to Add To Cart Button")
-    public ProductDetailsPage scrollToAddToCartButton(W3CTouchActions.Direction direction) throws IOException {
-        action.swipeIntoScreen(addToCardButton, direction);
-        return this;
-    }
-
-    @Step("Scroll to Product Picture")
-    public ProductDetailsPage scrollToProductPicture(W3CTouchActions.Direction direction) throws IOException {
-        action.swipeIntoScreen(productPicture, direction);
+    private ProductDetailsPage verifyProductPrice(String price) {
+        CustomSoftAssert.assertEquals(action.readText(productPrice),price);
         return this;
     }
 }

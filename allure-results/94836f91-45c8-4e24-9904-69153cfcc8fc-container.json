@@ -1,0 +1,1 @@
+{"uuid":"94836f91-45c8-4e24-9904-69153cfcc8fc","name":"baseTest.LinearTest","children":["35ef7997-c4af-4339-9420-5a3a2517a47a"],"befores":[{"name":"clearOldFiles","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1725573354778,"stop":1725573354880}],"afters":[],"start":1725573354680,"stop":1725573379065}

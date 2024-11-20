@@ -1,115 +1,81 @@
-package testCases;
+package testCasesByW3cTouchActions;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-import org.testng.ITestResult;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pagesByW3cTouchActions.LoginPage;
-import testCasesByW3cTouchActions.BaseTest;
-
-import static utils.JDBCManager.*;
-import utils.JsonManager;
-import static utils.RandomDataGenerator.*;
-import static utils.W3CTouchActions.Direction.*;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import baseTest.BaseTest;
+import yehiaEngine.managers.JsonManager;
+import static yehiaEngine.driverManager.AppiumFactory.getDriver;
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.UP;
 
 @Epic("SwagLabs Android App")
 @Feature("Checkout")
 @Story("Verify to Checkout Cart")
-@Listeners(utils.TestNGListners.class)
 public class CheckOutCart extends BaseTest {
 
     //Variables
-    JsonManager json1,json2;
-
-    @BeforeClass
-    public void prepareTestDataForLogin() throws IOException, SQLException {
-
-        String dbQuery1 = "SELECT Id,Username,Password,Status FROM yehiadb1.swaglabsusers Order by Id Asc";
-        String dbQuery2 = "SELECT Id,Name,Content FROM yehiadb1.swaglabsmassages Order by Id Asc";
-        String jsonFilePath = "src/test/resources/TestDataJsonFiles/LoginData.json";
-
-        //JsonKeys shall be filled by the same order of table columns of database query
-        String[] jsonKeysForUsers = {"Id","Username","Password","Status"};
-        String[] jsonKeysForMassages = {"Id","Name","Content"};
-
-        //In Case of writing one JsonMainKey for all records, the Records will represent an array of Json objects
-        //In Case of writing JsonMainKey for every record, Each Record will represent an object value for the corresponding JsonMainKey,In this case JsonMainKeys shall be filled by the same order of table rows on database
-        String jsonMainKeyForUsers = "Users";
-        String jsonMainKeyForMassages = "Massages";
-
-        json1 = new JsonManager(jsonFilePath);
-        JSONObject obj1 = setJsonObjectFromDBForNestedArrayOfJsonObjects(dbQuery1,jsonKeysForUsers,jsonMainKeyForUsers);
-        JSONObject obj2 = setJsonObjectFromDBForNestedArrayOfJsonObjects(dbQuery2,jsonKeysForMassages,jsonMainKeyForMassages);
-        JSONObject[] obj = {obj1, obj2};
-        setJsonFileFromMultipleJsonObjects(obj,jsonFilePath);
-    }
-
-    @BeforeClass
-    public void prepareTestDataForProducts() throws IOException, SQLException {
-
-        String dbQuery = "SELECT Id,Name,Price,Quantity,Description FROM yehiadb1.swaglabsproducts Order By Id Asc";
-        String jsonFilePath = "src/test/resources/TestDataJsonFiles/Products.json";
-
-        //JsonKeys shall be filled by the same order of table columns of database query
-        String[] jsonKeys = {"Id","Name","Price","Quantity","Description"};
-
-        //In Case of writing one JsonMainKey for all records, the Records will represent an array of Json objects
-        //In Case of writing JsonMainKey for every record, Each Record will represent an object value for the corresponding JsonMainKey,In this case JsonMainKeys shall be filled by the same order of table rows on database
-        String jsonMainKey = "Products";
-
-        json2 = new JsonManager(jsonFilePath);
-        setJsonFileFromDBForNestedArrayOfJsonObjects(dbQuery,jsonFilePath,jsonKeys,jsonMainKey);
-    }
+    String jsonFilePathForAddToCart = "src/test/resources/TestDataJsonFiles/CheckOutCartTestData.json";
+    JsonManager json = new JsonManager(jsonFilePathForAddToCart);
 
     @Test
-     public void checkOutCart() throws IOException, ParseException {
-        new LoginPage(driver)
-                .setUsername(json1.getValueFromArray("Users[0].Username"))
-                .setPassword(json1.getValueFromArray("Users[0].Password"))
-                .clickLoginButtonSuccess()
-                .assertHomePageIsOpened()
+     public void checkOutCart() {
+        // Login with Valid Credentials
+        new LoginPage(getDriver(isolatedDriver))
+                .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
+                .verifyProductsPageIsOpened()
 
-                .addProductToCartByButton(json2.getValueFromArray("Products[0].Name"))
-                .scrollToProduct(json2.getValueFromArray("Products[1].Name"),DOWN)
-                .addProductToCartByDragAndDrop(json2.getValueFromArray("Products[1].Name"))
-                .scrollToProduct(json2.getValueFromArray("Products[2].Name"),UP)
-                .openProductDetailsPage(json2.getValueFromArray("Products[2].Name"))
+        // Add 3 Products to Cart
+                .addProductToCartByButton(json.getData("Products[0].Name"))
+                .scrollToProduct(json.getData("Products[1].Name"),DOWN)
+                .addProductToCartByDragAndDrop(json.getData("Products[1].Name"))
+                .scrollToProduct(json.getData("Products[2].Name"),UP)
+                .openProductDetailsPage(json.getData("Products[2].Name"))
                 .zoomInProductPicture(100)
                 .zoomOutProductPicture(100)
-                .scrollToAddToCartButton(DOWN)
                 .addProductToCart()
 
+        // Open Cart Page and Assert Products are Added to Cart then Proceed
                 .openCartPageFromHeader()
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[0].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[1].Name"))
                 .scrollToCheckoutButton(DOWN)
                 .proceedToFillUserInfo()
 
-                .fillOutUserInfo(generateName(),generateName(),generateInteger())
+        // Fill User Info and Proceed to Checkout Overview Page
+                .fillOutUserInfo(json.getData("CheckOutInfo.FirstName"),json.getData("CheckOutInfo.LastName"),json.getData("CheckOutInfo.PostalCode"))
                 .continueToCheckoutOverview()
 
-                .removeProductFromCartBySwipe(json2.getValueFromArray("Products[0].Name"))
+        // Remove Product from Cart
+                .scrollToProduct(json.getData("Products[0].Name"),DOWN)
+                .removeProductFromCartBySwipe(json.getData("Products[0].Name"))
 
-                .verifyProductQuantity(json2.getValueFromArray("Products[2].Name")
-                        ,json2.getValueFromArray("Products[2].Quantity"))
-                .verifyProductPrice(json2.getValueFromArray("Products[2].Name")
-                        ,json2.getValueFromArray("Products[2].Price"))
-                .verifyProductDescription(json2.getValueFromArray("Products[2].Name")
-                        ,json2.getValueFromArray("Products[2].Description"))
+        // Assert Products are Added to Cart
 
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
+                .assertProductIsRemovedFromCart(json.getData("Products[0].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[1].Name"))
+
+        // Verify Products Info
+                .scrollToProduct(json.getData("Products[2].Name"),UP)
+                .verifyProductInfo(json.getData("Products[2].Name"), json.getData("Products[2].Price"), json.getData("Products[2].Quantity"),json.getData("Products[2].Description"))
+                .verifyProductInfo(json.getData("Products[1].Name"), json.getData("Products[1].Price"), json.getData("Products[1].Quantity"),json.getData("Products[1].Description"))
+
+        // Verify Payment and Shipping Info
                 .scrollToPaymentInfoView(DOWN)
-                .verifyPaymentInfo("SauceCard #31337")
-                .verifyShippingMethod("FREE PONY EXPRESS DELIVERY!")
-                .verifyTotalPriceOfProducts("41.02")
+                .verifyPaymentInfo(json.getData("Massages.PaymentInfo"))
+                .verifyShippingMethod(json.getData("Massages.ShippingMethod"))
+
+        // Verify The Total Price
+                .scrollToPaymentInfoView(DOWN)
+                .verifyTotalPriceOfProducts(Double.parseDouble(json.getData("Products[2].Price")) + Double.parseDouble(json.getData("Products[1].Price")))
+
+        // Finish CheckOut Cart
                 .scrollToFinishButton(DOWN)
                 .finishCartCheckOut()
-                .assertCheckoutSuccessfulMessage("THANK YOU FOR YOU ORDER");
+                .assertCheckoutSuccessfulMessage(json.getData("Massages.CheckoutSuccessfulMessage"));
     }
-
 }

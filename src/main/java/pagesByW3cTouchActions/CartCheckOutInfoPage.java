@@ -4,9 +4,6 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.asserts.SoftAssert;
-
-import java.io.IOException;
 
 public class CartCheckOutInfoPage extends HomePage{
     //Locators
@@ -23,24 +20,24 @@ public class CartCheckOutInfoPage extends HomePage{
 
     //Actions
     @Step("Fill Out User Info")
-    public CartCheckOutInfoPage fillOutUserInfo(String firstName,String lastName,String postalCode) throws IOException {
-
-        action.type(firstNameText,firstName);
-        action.type(lastNameText,lastName);
-        action.type(postalCodeText,postalCode);
+    public CartCheckOutInfoPage fillOutUserInfo(String firstName,String lastName,String postalCode) {
+        action
+                .type(firstNameText,firstName)
+                .type(lastNameText,lastName)
+                .type(postalCodeText,postalCode);
         return this;
     }
 
     @Step("Continue To CheckOut Overview")
-    public CartCheckOutOverviewPage continueToCheckoutOverview() throws IOException {
-        action.tab(continueButton);
+    public CartCheckOutOverviewPage continueToCheckoutOverview() {
+        action.tap(continueButton);
         return new CartCheckOutOverviewPage(driver);
     }
 
     @Step("Return Back To Cart Page")
     public CartPage returnBackToCartPage()
     {
-        action.tab(cancelButton);
+        action.tap(cancelButton);
         return new CartPage(driver);
     }
 

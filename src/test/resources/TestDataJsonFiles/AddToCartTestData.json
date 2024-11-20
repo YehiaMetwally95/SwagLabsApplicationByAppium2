@@ -1,0 +1,45 @@
+{
+  "Products": [
+    {
+      "Id": "1",
+      "Name": "Sauce Labs Bike Light",
+      "Price": "9.99",
+      "Quantity": "1",
+      "Description": "A red light isn\u0027t the desired state in testing but it sure helps when riding your bike at night. Water-resistant with 3 lighting modes, 1 AAA battery included."
+    },
+    {
+      "Id": "2",
+      "Name": "Sauce Labs Onesie",
+      "Price": "7.99",
+      "Quantity": "1",
+      "Description": "Rib snap infant onesie for the junior automation engineer in development. Reinforced 3-snap bottom closure, two-needle hemmed sleeved and bottom won\u0027t unravel."
+    },
+    {
+      "Id": "3",
+      "Name": "Sauce Labs Backpack",
+      "Price": "29.99",
+      "Quantity": "1",
+      "Description": "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection."
+    }
+  ],
+  "Users": [
+    {
+      "Id": "1",
+      "Username": "standard_user",
+      "Password": "secret_sauce",
+      "Status": "valid"
+    },
+    {
+      "Id": "2",
+      "Username": "problem_user",
+      "Password": "secret_sauce",
+      "Status": "valid"
+    },
+    {
+      "Id": "3",
+      "Username": "locked_out_user",
+      "Password": "secret_sauce",
+      "Status": "locked"
+    }
+  ]
+}

@@ -5,9 +5,6 @@ import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
-
-import java.io.IOException;
 
 public class CartCheckOutCompletePage extends HomePage {
     //Locators
@@ -23,13 +20,13 @@ public class CartCheckOutCompletePage extends HomePage {
     @Step("Return Back to Products Page")
     public ProductsPage returnBackToProductsPage()
     {
-        action.tab(backHomeLocator);
+        action.tap(backHomeLocator);
         return new ProductsPage(driver);
     }
 
     //Validations
     @Step("Assert CheckOut Successful Massage")
-    public CartCheckOutCompletePage assertCheckoutSuccessfulMessage(String text) throws IOException {
+    public CartCheckOutCompletePage assertCheckoutSuccessfulMessage(String text) {
         Assert.assertEquals(action.readText(successfulMassage),text);
         return this;
     }

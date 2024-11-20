@@ -3,13 +3,10 @@ package pagesByW3cTouchActions;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
-import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
-import utils.W3CTouchActions;
-
-import java.io.IOException;
+import yehiaEngine.assertions.CustomAssert;
+import yehiaEngine.assertions.CustomSoftAssert;
+import yehiaEngine.elementActions.W3CTouchActions;
 
 public class LoginPage{
 
@@ -31,51 +28,68 @@ public class LoginPage{
     }
 
     //Actions
+    @Step("Login with Valid User")
+    public ProductsPage loginWithValidUser(String username, String password) {
+        setUsername(username)
+                .setPassword(password)
+                .clickLoginButtonSuccess();
+        return new ProductsPage(driver);
+    }
+
+    @Step("Login with Invalid User")
+    public LoginPage loginWithInvalidUser(String username, String password) {
+        setUsername(username)
+                .setPassword(password)
+                .clickLoginButtonFailure();
+        return this;
+    }
+
+    //Private Methods
     @Step("Enter Username")
-    public LoginPage setUsername(String username) throws IOException {
+    private LoginPage setUsername(String username) {
         action.type(usernameTextBox,username);
         return this;
     }
 
     @Step("Enter Password")
-    public LoginPage setPassword(String password) throws IOException {
+    private LoginPage setPassword(String password) {
         action.type(passwordTextBox,password);
         return this;
     }
 
     @Step("Click on Submit Button")
-    public LoginPage clickLoginButtonFailure() throws IOException {
+    private LoginPage clickLoginButtonFailure() {
 
-        action.tab(loginButton);
+        action.tap(loginButton);
         return this;
     }
 
     @Step("Click on Submit Button")
-    public ProductsPage clickLoginButtonSuccess() throws IOException {
+    private ProductsPage clickLoginButtonSuccess() {
 
-        action.tab(loginButton);
+        action.tap(loginButton);
         return new ProductsPage(driver);
     }
 
     //Validations
     @Step("Assert Error Massage For Invalid Credentials")
-    public LoginPage assertErrorMassageForInvalidCredentials(String massage) throws IOException, ParseException {
+    public LoginPage assertErrorMassageForInvalidCredentials(String massage) {
 
-        Assert.assertEquals(action.readText(errorMassage),massage);
+        CustomAssert.assertEquals(action.readText(errorMassage),massage);
         return this;
     }
 
     @Step("Assert Error Massage For Locked User")
-    public LoginPage assertErrorMassageForLockedUser(String massage) throws IOException, ParseException {
+    public LoginPage assertErrorMassageForLockedUser(String massage)  {
 
-        Assert.assertEquals(action.readText(errorMassage),massage);
+        CustomAssert.assertEquals(action.readText(errorMassage),massage);
         return this;
     }
 
     @Step("Verify The LogOut is Succeeded")
     public LoginPage verifyLogOutIsSucceeded()
     {
+        CustomSoftAssert.assertTrue(action.isElementDisplayed(loginButton));
         return this;
     }
-
 }

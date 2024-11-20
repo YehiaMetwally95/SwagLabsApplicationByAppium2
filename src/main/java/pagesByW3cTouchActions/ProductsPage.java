@@ -1,17 +1,11 @@
 package pagesByW3cTouchActions;
 
-import com.github.javafaker.App;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
-import utils.CustomSoftAssert;
-import utils.W3CTouchActions;
-import utils.W3CTouchActions.Direction;
-
-import java.io.IOException;
+import yehiaEngine.assertions.CustomSoftAssert;
+import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
 public class ProductsPage extends HomePage {
 
@@ -56,7 +50,7 @@ public class ProductsPage extends HomePage {
     public ProductsPage addProductToCartByButton(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.tab(addToCardButton);
+        action.tap(addToCardButton);
         return this;
     }
 
@@ -64,7 +58,7 @@ public class ProductsPage extends HomePage {
     public ProductsPage removeProductFromCartByButton(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.tab(removeFromCartButton);
+        action.tap(removeFromCartButton);
         return this;
     }
 
@@ -72,26 +66,20 @@ public class ProductsPage extends HomePage {
     public ProductDetailsPage openProductDetailsPage(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.tab(productItem);
+        action.tap(productItem);
         return new ProductDetailsPage(driver);
     }
 
     //Validation
-    @Step("Assert Home Page is Opened")
-    public ProductsPage assertHomePageIsOpened() throws IOException {
-        Assert.assertTrue(action.isElementDisplayed(menuIcon));
-        return this;
-    }
-
-    @Step("verify title")
-    public ProductsPage test() throws IOException {
-        CustomSoftAssert.softAssert.assertEquals(action.readText(products),"yehia");
+    @Step("Verify Products Page is Opened")
+    public ProductsPage verifyProductsPageIsOpened() {
+        CustomSoftAssert.assertTrue(action.isElementDisplayed(menuIcon));
         return this;
     }
 
     //Scrolling
     @Step("Scroll to Product")
-    public ProductsPage scrollToProduct(String productName, Direction direction)
+    public ProductsPage scrollToProduct (String productName, Direction direction)
     {
         defineLocatorsByProductName(productName);
         action.swipeIntoScreen(addToCardButton,direction);
