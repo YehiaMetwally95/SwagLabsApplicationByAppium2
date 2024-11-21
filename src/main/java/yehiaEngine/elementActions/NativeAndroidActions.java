@@ -41,12 +41,8 @@ public class NativeAndroidActions {
         checkElementEnabled(driver,locatorType,locatorValue,elementName);
         //Execute the Tap Action
         try{
-            getFluentWait(driver).until(f ->
-            {
-                new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction)))).click().perform();
-                return true;
-            });
+            new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
+                    getUiAutomatorQuery(locatorType, locatorValue, null)))).click().perform();
         }catch (Exception e){
             LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", e);
         }
@@ -64,12 +60,9 @@ public class NativeAndroidActions {
         checkElementEnabled(driver,locatorType,locatorValue,elementName);
         //Execute the Tap Action
         try{
-            getFluentWait(driver).until(f ->
-            {
-                new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction)))).click().perform();
-                return true;
-            });
+            new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
+                    getUiAutomatorQuery(locatorType, locatorValue, null)))).click().perform();
+
         }catch (Exception e){
             LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", e);
         }
@@ -135,77 +128,6 @@ public class NativeAndroidActions {
     //Long Tap on Button or Link without Swipe & Log Tapping Action
     public NativeAndroidActions longTap (By locator) {
         new W3CTouchActions(driver).longTab(locator);
-        return this;
-    }
-
-    /**
-     * *********************************  Double Tap Actions  ****************************************
-     */
-    // Double Tap on Button or Link by Swiping into Screen & Log Tapping Action
-    public NativeAndroidActions doubleTap(LocatorType locatorType, String locatorValue, ScrollDirection direction) {
-        //Swipe "if needed" Till Element is Displayed into View
-        swipeIntoScreen(locatorType,locatorValue,direction);
-        // Get Element Name
-        String elementName = getElementName(driver,locatorType,locatorValue);
-        //Check if Element is Enabled on Page (Not Disabled)
-        checkElementEnabled(driver,locatorType,locatorValue,elementName);
-        //Execute the Double Tap Action
-        try{
-            getFluentWait(driver).until(f ->
-            {
-                new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction)))).doubleClick().perform();
-                return true;
-            });
-        }catch (Exception e){
-            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
-        }
-        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
-        return this;
-    }
-
-    //Double Tap on Button or Link by Swiping into swiped element & Log Tapping Action
-    public NativeAndroidActions doubleTap (LocatorType locatorType, String locatorValue, ScrollDirection direction,LocatorType swipedElementLocatorType, String swipedElementLocatorValue) {
-        //Swipe "if needed" Till Element is Displayed into View
-        swipeIntoElement(locatorType, locatorValue,direction,swipedElementLocatorType,swipedElementLocatorValue);
-        // Get Element Name
-        String elementName = getElementName(driver,locatorType,locatorValue);
-        //Check if Element is Enabled on Page (Not Disabled)
-        checkElementEnabled(driver,locatorType,locatorValue,elementName);
-        //Execute the Double Tap Action
-        try{
-            getFluentWait(driver).until(f ->
-            {
-                new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction)))).doubleClick().perform();
-                return true;
-            });
-        }catch (Exception e){
-            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
-        }
-        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
-        return this;
-    }
-
-    //Double Tap on Button or Link without Swipe & Log Tapping Action
-    public NativeAndroidActions doubleTap (By locator) {
-        //Swipe "if needed" Till Element is Displayed into View
-        W3CTouchActionsHelper.checkElementDisplayed(driver,locator);
-        // Get Element Name
-        String elementName = W3CTouchActionsHelper.getElementName(driver,locator);
-        //Check if Element is Enabled on Page (Not Disabled)
-        W3CTouchActionsHelper.checkElementEnabled(driver,locator,elementName);
-        //Execute the Double Tap Action
-        try{
-            getFluentWait(driver).until(f ->
-            {
-                new Actions(driver).moveToElement(driver.findElement(locator)).doubleClick().perform();
-                return true;
-            });
-        }catch (Exception e){
-            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
-        }
-        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
         return this;
     }
 

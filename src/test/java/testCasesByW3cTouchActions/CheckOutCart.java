@@ -39,9 +39,9 @@ public class CheckOutCart extends BaseTest {
 
         // Open Cart Page and Assert Products are Added to Cart then Proceed
                 .openCartPageFromHeader()
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[0].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[1].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .scrollToCheckoutButton(DOWN)
                 .proceedToFillUserInfo()
 
@@ -54,10 +54,9 @@ public class CheckOutCart extends BaseTest {
                 .removeProductFromCartBySwipe(json.getData("Products[0].Name"))
 
         // Assert Products are Added to Cart
-
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .assertProductIsRemovedFromCart(json.getData("Products[0].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[1].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
 
         // Verify Products Info
                 .scrollToProduct(json.getData("Products[2].Name"),UP)
@@ -70,7 +69,6 @@ public class CheckOutCart extends BaseTest {
                 .verifyShippingMethod(json.getData("Massages.ShippingMethod"))
 
         // Verify The Total Price
-                .scrollToPaymentInfoView(DOWN)
                 .verifyTotalPriceOfProducts(Double.parseDouble(json.getData("Products[2].Price")) + Double.parseDouble(json.getData("Products[1].Price")))
 
         // Finish CheckOut Cart

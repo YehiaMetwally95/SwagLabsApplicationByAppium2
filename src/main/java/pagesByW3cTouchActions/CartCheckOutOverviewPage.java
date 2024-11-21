@@ -8,6 +8,7 @@ import yehiaEngine.assertions.CustomAssert;
 import yehiaEngine.assertions.CustomSoftAssert;
 import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
 import static yehiaEngine.elementActions.W3CTouchActions.Direction.LEFT;
 
 public class CartCheckOutOverviewPage extends HomePage{
@@ -36,7 +37,7 @@ public class CartCheckOutOverviewPage extends HomePage{
     private void defineLocatorsByProductName(String productName)
     {
         this.productName = productName;
-        productItem = AppiumBy.xpath("//*[@text= '"+productName+"']/ancestor::*[@content-desc='test-Item']");
+        productItem = AppiumBy.xpath("//*[@text= '"+productName+"']");
         productPriceLocator = AppiumBy.xpath("//*[@text= '"+productName+"']/parent::*/following-sibling::*[@content-desc='test-Price']//android.widget.TextView");
         productDescriptionLocator = AppiumBy.xpath("//*[@text= '"+productName+"']/following-sibling::android.widget.TextView");
         productQuantityLocator = AppiumBy.xpath("//*[@text= '"+productName+"']/ancestor::*[@content-desc='test-Description']/preceding-sibling::*[@content-desc='test-Amount']/android.widget.TextView");
@@ -69,7 +70,7 @@ public class CartCheckOutOverviewPage extends HomePage{
     public CartCheckOutOverviewPage assertProductIsAddedToCart(String productName)
     {
         defineLocatorsByProductName(productName);
-        CustomAssert.assertTrue(action.isElementDisplayed(productItem));
+        CustomAssert.assertTrue(action.isElementDisplayed(productItem,DOWN));
         return this;
     }
 
@@ -77,7 +78,7 @@ public class CartCheckOutOverviewPage extends HomePage{
     public CartCheckOutOverviewPage assertProductIsRemovedFromCart(String productName)
     {
         defineLocatorsByProductName(productName);
-        CustomAssert.assertFalse(action.isElementDisplayed(productItem));
+        CustomAssert.assertTrue(action.isElementNotDisplayed(productItem));
         return this;
     }
 

@@ -47,8 +47,10 @@ public class NativeAndroidActionsHelper {
     public static void swipeTillElementDisplayed (AppiumDriver driver,NativeAndroidActions.LocatorType locatorType, String locatorValue, NativeAndroidActions.ScrollDirection direction, NativeAndroidActions.LocatorType swipedElementLocatorType, String swipedElementLocatorValue)
     {
         try {
-            getFluentWait(driver).until(f -> driver.findElement(AppiumBy.androidUIAutomator(
-                    getUiAutomatorQuery(locatorType, locatorValue, direction,swipedElementLocatorType,swipedElementLocatorValue))).isDisplayed());
+            getFluentWait(driver).until(
+                    f -> driver.findElement(AppiumBy.androidUIAutomator(
+                    getUiAutomatorQuery(locatorType, locatorValue, direction,swipedElementLocatorType,swipedElementLocatorValue))).isDisplayed()
+            );
         } catch (TimeoutException e) {
             LogHelper.logErrorStep("The Element located by [" + locatorType + " - " + locatorValue + "] is not Displayed", e);
         }

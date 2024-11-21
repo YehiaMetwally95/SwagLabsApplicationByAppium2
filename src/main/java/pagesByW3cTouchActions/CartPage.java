@@ -8,8 +8,7 @@ import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomAssert;
 import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.LEFT;
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.*;
 
 public class CartPage extends HomePage{
 
@@ -30,7 +29,7 @@ public class CartPage extends HomePage{
     //Actions
     private void defineLocatorsByProductName(String productName)
     {
-        productItem = AppiumBy.xpath("//*[@text='"+productName+"']/ancestor::*[@content-desc='test-Item']");
+        productItem = AppiumBy.xpath("//*[@text='"+productName+"']");
         removeFromCartButton = AppiumBy.xpath("//*[@text='"+productName+"']/parent::*/following-sibling::*[@content-desc='test-Price']//*[@content-desc='test-REMOVE']");
     }
 
@@ -78,7 +77,7 @@ public class CartPage extends HomePage{
     public CartPage assertProductIsRemovedFromCart(String productName)
     {
         defineLocatorsByProductName(productName);
-        CustomAssert.assertFalse(action.isElementDisplayed(productItem,DOWN));
+        CustomAssert.assertTrue(action.isElementNotDisplayed(productItem,DOWN));
         return this;
     }
 

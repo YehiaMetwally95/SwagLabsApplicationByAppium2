@@ -59,9 +59,9 @@ public class AddToCartTests extends BaseTest {
                 .addProductToCartByDragAndDrop(json.getData("Products[2].Name"))
 
                 .openCartPageFromHeader()
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[0].Name"))
-                .assertProductIsAddedToCart(json.getData("Products[1].Name"));
+                .assertProductIsAddedToCart(json.getData("Products[1].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"));
     }
 
     @Test
