@@ -16,9 +16,10 @@ import java.util.List;
 
 import static org.openqa.selenium.interactions.PointerInput.Kind.TOUCH;
 import static org.openqa.selenium.interactions.PointerInput.Origin.viewport;
-import static yehiaEngine.elementActions.Helpers.WaitsManager.*;
-import static yehiaEngine.managers.PropertiesManager.getPropertiesValue;
 import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.*;
+import static yehiaEngine.elementActions.Helpers.WaitsManager.getFluentWait;
+import static yehiaEngine.elementActions.Helpers.WaitsManager.getSwipeWait;
+import static yehiaEngine.managers.PropertiesManager.getPropertiesValue;
 
 public class W3CTouchActions {
     AppiumDriver driver;

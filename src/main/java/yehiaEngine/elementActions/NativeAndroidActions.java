@@ -1,15 +1,21 @@
 package yehiaEngine.elementActions;
+
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper;
 import yehiaEngine.loggers.LogHelper;
+
 import java.util.List;
-import static yehiaEngine.elementActions.Helpers.WaitsManager.*;
+
 import static yehiaEngine.elementActions.Helpers.NativeAndroidActionsHelper.*;
+import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.singleFingerSwipe;
+import static yehiaEngine.elementActions.Helpers.WaitsManager.getFluentWait;
 
 
 public class NativeAndroidActions {
@@ -212,7 +218,7 @@ public class NativeAndroidActions {
         return new W3CTouchActions(driver).readText(locator);
     }
 
-    /**
+     /**
      * *********************************  Check Element Displayed Actions  *************************************
      */
     // Verify Element is Displayed on Page With swipe into screen
@@ -587,73 +593,3 @@ public class NativeAndroidActions {
     }
 
 }
-
-/* //Get the Locator text that will be used in AppiumBy.AndroidUIAutomator to perform scrolling into screen to the child class of the target element locator before finding it
-    private String getChildTextQuery(LocatorType type, String locator, ScrollDirection direction, String widgetClassName) {
-        String query = null;
-        switch (type) {
-            case LocatorType.TEXT: {
-                if (direction == ScrollDirection.VERTICAL) {
-                    query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(" +
-                            "new UiSelector().textContains(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                } else if (direction == ScrollDirection.HORIZONTAL) {
-
-                    query = "new UiScrollable(new UiSelector()).setAsHorizontalList.scrollIntoView(" +
-                            "new UiSelector().textContains(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                }
-                break;
-            }
-
-            case LocatorType.ACCESSIBILITY_ID: {
-                if (direction == ScrollDirection.VERTICAL) {
-                    query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(" +
-                            "new UiSelector().description(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                } else if (direction == ScrollDirection.HORIZONTAL) {
-
-                    query = "new UiScrollable(new UiSelector()).setAsHorizontalList.scrollIntoView(" +
-                            "new UiSelector().description(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                }
-                break;
-            }
-
-            case LocatorType.RESOURCE_ID: {
-                if (direction == ScrollDirection.VERTICAL) {
-                    query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(" +
-                            "new UiSelector().resourceId(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                } else if (direction == ScrollDirection.HORIZONTAL) {
-
-                    query = "new UiScrollable(new UiSelector()).setAsHorizontalList.scrollIntoView(" +
-                            "new UiSelector().resourceId(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                }
-                break;
-            }
-
-            case LocatorType.CLASS_NAME: {
-                if (direction == ScrollDirection.VERTICAL) {
-                    query = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(" +
-                            "new UiSelector().className(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                } else if (direction == ScrollDirection.HORIZONTAL) {
-
-                    query = "new UiScrollable(new UiSelector()).setAsHorizontalList.scrollIntoView(" +
-                            "new UiSelector().className(\"" + locator + "\").childSelector(new UiSelector().className(android.widget." + widgetClassName + ")))";
-                }
-                break;
-            }
-
-        }
-        return query;
-    }*/
-
-
-/*
-//Scroll Into Screen to Button or Link in a given direction then read the text in its child Class "Can be TextView or EditText"
-public String readChildText(LocatorType type, String locator, ScrollDirection direction, String widgetClassName) {
-    getFluentWait(driver).until(f ->
-    {
-        driver.findElement(AppiumBy.androidUIAutomator(
-                getChildTextQuery(type, locator, direction, widgetClassName))).getText();
-        return true;
-    });
-    return driver.findElement(AppiumBy.androidUIAutomator(
-            getChildTextQuery(type, locator, direction, widgetClassName))).getText();
-}*/
