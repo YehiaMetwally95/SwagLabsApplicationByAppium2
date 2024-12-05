@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Chrome_Ubuntu_UI_Test:
+  Samsung_Ubuntu_Android_Test:
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         continue-on-error: true
         run: >
-          mvn clean test -Dtest="testCasesByNativeAndroidActions.LoginTests.successfulLogin"
+          mvn clean test -Dtest="testCasesByNativeAndroidActions.LoginTests#successfulLogin"
           -DappiumExecutionType="SauceLabs"
           -DAppiumServerURL="https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"
           -DappType="NativeAndroid"
