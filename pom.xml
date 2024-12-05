@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <testng.version>7.10.2</testng.version>
-        <selenium-java.version>4.25.0</selenium-java.version>
+        <selenium-java.version>4.27.0</selenium-java.version>
         <rest-assured.version>5.5.0</rest-assured.version>
         <appium.version>9.3.0</appium.version>
         <mysql-connector-j.version>9.1.0</mysql-connector-j.version>
