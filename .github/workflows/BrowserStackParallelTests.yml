@@ -42,7 +42,7 @@ jobs:
           -Dusername="yehiametwally_pH1Gf8"
           -DaccessKey="cEPMSpKSXqqtZmmWASiB"
           -DparallelMode="METHODS"
-          -DthreadCount ="4"
+          -DthreadCount="4"
           -DsyncWithDB="true"
 
       - name: Generate Allure report
