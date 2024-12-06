@@ -86,7 +86,7 @@ public class CartPage extends HomePage{
     public CartPage scrollToProduct(String productName, Direction direction)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoScreen(removeFromCartButton,direction);
+        action.swipeIntoScreen(productItem,direction);
         return this;
     }
 

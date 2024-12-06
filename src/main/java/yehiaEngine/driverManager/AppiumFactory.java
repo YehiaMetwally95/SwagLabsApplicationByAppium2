@@ -75,12 +75,11 @@ public class AppiumFactory {
         cap = new DesiredCapabilities();
         cap.setCapability("appium:newCommandTimeout",600);
 
-        //Device Capabilities
+            //Device Capabilities
         cap.setCapability("appium:deviceName",deviceName);
         cap.setCapability("appium:udid",deviceUdid);
 
             //Platform Capabilities
-        cap.setCapability("appium:platformName","Android");
         cap.setCapability("appium:platformVersion",platformVersion);
         cap.setCapability("appium:automationName",nativeAutomationDriver);
 
@@ -89,6 +88,7 @@ public class AppiumFactory {
             //Application Capabilities for Native App
             if (appType.equalsIgnoreCase("NativeAndroid"))
             {
+                cap.setCapability("appium:platformName","Android");
                 cap.setCapability("appium:app", System.getProperty("user.dir")+"\\src\\main\\resources\\apps\\"+appName);
                 cap.setCapability("appium:appActivity",appActivity);
             }
@@ -96,6 +96,7 @@ public class AppiumFactory {
             //Browser Capabilities for Web-Based App
             else if (appType.equalsIgnoreCase("WebAppAndroid"))
             {
+                cap.setCapability("appium:platformName","Android");
                 cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
                 cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
             }
@@ -106,6 +107,7 @@ public class AppiumFactory {
             //Application Capabilities for Native App
             if (appType.equalsIgnoreCase("NativeAndroid"))
             {
+                cap.setCapability("appium:platformName","Android");
                 cap.setCapability("appium:app","storage:filename="+appName);
                 cap.setCapability("sauce:options",getSauceLabsCapabilities());
             }
@@ -113,9 +115,30 @@ public class AppiumFactory {
             //Browser Capabilities for Web-Based App
             else if (appType.equalsIgnoreCase("WebAppAndroid"))
             {
+                cap.setCapability("appium:platformName","Android");
                 cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
                 cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
                 cap.setCapability("sauce:options",getSauceLabsCapabilities());
+            }
+        }
+
+        else if (executionType.equalsIgnoreCase("BrowserStack"))
+        {
+            //Application Capabilities for Native App
+            if (appType.equalsIgnoreCase("NativeAndroid"))
+            {
+                cap.setCapability("platformName","android");
+                cap.setCapability("appium:app","bs://"+appName);
+                cap.setCapability("bstack:options",getBrowserStackCapabilities());
+            }
+
+            //Browser Capabilities for Web-Based App
+            else if (appType.equalsIgnoreCase("WebAppAndroid"))
+            {
+                cap.setCapability("platformName","android");
+                cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
+                cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
+                cap.setCapability("bstack:options",getBrowserStackCapabilities());
             }
         }
 
@@ -133,22 +156,66 @@ public class AppiumFactory {
         cap.setCapability("appium:udid",deviceUdid);
 
         //Platform Capabilities
-        cap.setCapability("appium:platformName","Ios");
         cap.setCapability("appium:platformVersion",platformVersion);
         cap.setCapability("appium:automationName",nativeAutomationDriver);
 
-        //Application Capabilities for Native App
-        if (appType.equalsIgnoreCase("NativeIOS"))
+        if (executionType.equalsIgnoreCase("Local"))
         {
-            cap.setCapability("appium:app", System.getProperty("user.dir")+"\\src\\main\\resources\\apps\\"+appName);
-            cap.setCapability("appium:appActivity",appActivity);
+            //Application Capabilities for Native App
+            if (appType.equalsIgnoreCase("NativeIOS"))
+            {
+                cap.setCapability("appium:platformName","Ios");
+                cap.setCapability("appium:app", System.getProperty("user.dir")+"\\src\\main\\resources\\apps\\"+appName);
+                cap.setCapability("appium:appActivity",appActivity);
+            }
+
+            //Browser Capabilities for Web-Based App
+            else if (appType.equalsIgnoreCase("WebAppIOS"))
+            {
+                cap.setCapability("appium:platformName","Ios");
+                cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
+                cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
+            }
         }
 
-        //Browser Capabilities for Web-Based App
-        if (appType.equalsIgnoreCase("WebAppIOS"))
+        else if (executionType.equalsIgnoreCase("SauceLabs"))
         {
-            cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
-            cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
+            //Application Capabilities for Native App
+            if (appType.equalsIgnoreCase("NativeIOS"))
+            {
+                cap.setCapability("appium:platformName","Ios");
+                cap.setCapability("appium:app","storage:filename="+appName);
+                cap.setCapability("sauce:options",getSauceLabsCapabilities());
+            }
+
+            //Browser Capabilities for Web-Based App
+            else if (appType.equalsIgnoreCase("WebAppIOS"))
+            {
+                cap.setCapability("appium:platformName","Ios");
+                cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
+                cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
+                cap.setCapability("sauce:options",getSauceLabsCapabilities());
+            }
+        }
+
+        else if (executionType.equalsIgnoreCase("BrowserStack"))
+        {
+            //Application Capabilities for Native App
+            if (appType.equalsIgnoreCase("NativeIOS"))
+            {
+                cap.setCapability("platformName","Ios");
+                cap.setCapability("appium:app","bs://"+appName);
+                cap.setCapability("bstack:options",getBrowserStackCapabilities());
+            }
+
+            //Browser Capabilities for Web-Based App
+            else if (appType.equalsIgnoreCase("WebAppIOS"))
+            {
+                cap.setCapability("platformName","Ios");
+                cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
+                cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
+                cap.setCapability("bstack:options",getBrowserStackCapabilities());
+            }
         }
 
         return cap;
@@ -165,6 +232,22 @@ public class AppiumFactory {
         sauceOptions.setCapability("name", testName);
         sauceOptions.setCapability("deviceOrientation", deviceOrientation);
         return sauceOptions;
+    }
+
+    private static DesiredCapabilities getBrowserStackCapabilities()
+    {
+        DesiredCapabilities browserStackOptions;
+        browserStackOptions = new DesiredCapabilities();
+  //      browserStackOptions.setCapability("appiumVersion", "2.6.0");
+        browserStackOptions.setCapability("userName", username);
+        browserStackOptions.setCapability("accessKey", accessKey);
+        browserStackOptions.setCapability("buildName", build);
+        browserStackOptions.setCapability("sessionName", testName);
+        browserStackOptions.setCapability("deviceOrientation", deviceOrientation);
+        browserStackOptions.setCapability("debug", "true");
+        browserStackOptions.setCapability("networkLogs", "true");
+
+        return browserStackOptions;
     }
 
     private static URL getAppiumServerURL () throws MalformedURLException {

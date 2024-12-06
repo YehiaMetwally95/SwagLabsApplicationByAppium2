@@ -1,4 +1,4 @@
-name: SauceLabs Tests Remotely
+name: BrowserStack Parallel Tests
 
 on:
   workflow_dispatch:
@@ -23,20 +23,27 @@ jobs:
         with:
           maven-version: 3.9.4
 
+      - name: Set up MySQL Server with Docker Containers
+        run: docker compose -f src/main/resources/dockerFiles/docker-compose-mysql-v3.yml up -d
+
+      - name: Check Running Containers
+        run: docker ps
+
       - name: Run tests
         continue-on-error: true
         run: >
-          mvn clean test -Dtest="testCasesByNativeAndroidActions.CheckOutCart"
-          -DappiumExecutionType="SauceLabs"
-          -DAppiumServerURL="https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"
+          mvn clean test -Dtest="testCasesByNativeAndroidActions.AddToCartTests"
+          -DappiumExecutionType="BrowserStack"
+          -DAppiumServerURL="http://hub.browserstack.com/wd/hub"
           -DappType="NativeAndroid"
-          -DdeviceName="Samsung Galaxy S23 FE"
+          -DdeviceName="Samsung Galaxy S23 Ultra"
           -DplatformVersion="13.0"
           -DnativeAutomationDriver="UiAutomator2"
-          -Dusername="oauth-jmetwallym-40486"
-          -DaccessKey="02b2f4ca-6237-456d-b725-aad1e104ae91"
-          -DparallelMode="NONE"
-          -DsyncWithDB="false"
+          -Dusername="yehiametwally_pH1Gf8"
+          -DaccessKey="cEPMSpKSXqqtZmmWASiB"
+          -DparallelMode="METHODS"
+          -DthreadCount ="4"
+          -DsyncWithDB="true"
 
       - name: Generate Allure report
         run: mvn allure:report
@@ -49,3 +56,9 @@ jobs:
         with:
           name: Allure Report UI Tests Chrome Ubuntu
           path: "target/site/allure-maven-plugin"
+
+
+      - name: Cleanup Docker Containers
+        if: always()
+        run: |
+          docker compose -f src/main/resources/dockerFiles/docker-compose-mysql-v3.yml down

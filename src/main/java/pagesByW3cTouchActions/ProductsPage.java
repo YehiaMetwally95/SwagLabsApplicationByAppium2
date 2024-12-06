@@ -32,7 +32,7 @@ public class ProductsPage extends HomePage {
     private void defineLocatorsByProductName(String productName)
     {
         this.productItemText = productName;
-        productItem = AppiumBy.xpath("//*[@text='"+productName+"']/ancestor::android.view.ViewGroup[@content-desc='test-Item']");
+        productItem = AppiumBy.xpath("//*[@text='"+productName+"']");
         addToCardButton = AppiumBy.xpath("//*[@text='"+productName+"']/following-sibling::android.view.ViewGroup[@content-desc='test-ADD TO CART']");
         removeFromCartButton= AppiumBy.xpath("//*[@text='"+productName+"']/following-sibling::android.view.ViewGroup[@content-desc='test-REMOVE']");
         dragButton =AppiumBy.xpath("//*[@text='"+productName+"']/following-sibling::android.view.ViewGroup[@content-desc='test-Drag Handle']");
@@ -80,6 +80,14 @@ public class ProductsPage extends HomePage {
     //Scrolling
     @Step("Scroll to Product")
     public ProductsPage scrollToProduct (String productName, Direction direction)
+    {
+        defineLocatorsByProductName(productName);
+        action.swipeIntoScreen(productItem,direction);
+        return this;
+    }
+
+    @Step("Scroll to Add To Cart Button")
+    public ProductsPage scrollToAddToCartButton (String productName, Direction direction)
     {
         defineLocatorsByProductName(productName);
         action.swipeIntoScreen(addToCardButton,direction);

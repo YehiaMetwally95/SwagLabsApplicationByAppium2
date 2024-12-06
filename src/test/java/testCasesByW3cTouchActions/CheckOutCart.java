@@ -29,7 +29,7 @@ public class CheckOutCart extends BaseTest {
 
         // Add 3 Products to Cart
                 .addProductToCartByButton(json.getData("Products[0].Name"))
-                .scrollToProduct(json.getData("Products[1].Name"),DOWN)
+                .scrollToAddToCartButton(json.getData("Products[1].Name"),DOWN)
                 .addProductToCartByDragAndDrop(json.getData("Products[1].Name"))
                 .scrollToProduct(json.getData("Products[2].Name"),UP)
                 .openProductDetailsPage(json.getData("Products[2].Name"))
@@ -50,7 +50,6 @@ public class CheckOutCart extends BaseTest {
                 .continueToCheckoutOverview()
 
         // Remove Product from Cart
-                .scrollToProduct(json.getData("Products[0].Name"),DOWN)
                 .removeProductFromCartBySwipe(json.getData("Products[0].Name"))
 
         // Assert Products are Added to Cart
@@ -66,9 +65,11 @@ public class CheckOutCart extends BaseTest {
         // Verify Payment and Shipping Info
                 .scrollToPaymentInfoView(DOWN)
                 .verifyPaymentInfo(json.getData("Massages.PaymentInfo"))
+                .scrollToShippingInfoView(DOWN)
                 .verifyShippingMethod(json.getData("Massages.ShippingMethod"))
 
         // Verify The Total Price
+                .scrollToTotalPriceView(DOWN)
                 .verifyTotalPriceOfProducts(Double.parseDouble(json.getData("Products[2].Price")) + Double.parseDouble(json.getData("Products[1].Price")))
 
         // Finish CheckOut Cart
