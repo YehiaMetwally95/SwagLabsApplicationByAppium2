@@ -31,7 +31,7 @@ jobs:
           -DAppiumServerURL="https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"
           -DappType="NativeAndroid"
           -DdeviceName="Samsung Galaxy S23 FE"
-          -DplatformVersion="14.0"
+          -DplatformVersion="14"
           -DnativeAutomationDriver="UiAutomator2"
           -DappName="Android-SauceLabs.apk"
           -Dusername="oauth-jmetwallym-40486"
