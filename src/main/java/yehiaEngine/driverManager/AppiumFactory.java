@@ -246,7 +246,6 @@ public class AppiumFactory {
         browserStackOptions.setCapability("deviceOrientation", deviceOrientation);
         browserStackOptions.setCapability("debug", "true");
         browserStackOptions.setCapability("networkLogs", "true");
-        browserStackOptions.setCapability("local", "true");
 
         return browserStackOptions;
     }
