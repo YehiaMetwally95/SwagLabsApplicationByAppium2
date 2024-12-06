@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomSoftAssert;
 import yehiaEngine.elementActions.W3CTouchActions.Direction;
 
+import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
+
 public class ProductDetailsPage extends HomePage{
 
     //Variables
@@ -65,7 +67,8 @@ public class ProductDetailsPage extends HomePage{
     @Step("Verify Product Details")
     public ProductDetailsPage verifyProductDetails(String name,String description,String price)
     {
-        verifyProductName(name)
+        scrollToProductDescription(DOWN)
+                .verifyProductName(name)
                 .verifyProductDescription(description)
                 .verifyProductPrice(price);
         return this;
@@ -86,6 +89,14 @@ public class ProductDetailsPage extends HomePage{
     @Step("Verify Product Price")
     private ProductDetailsPage verifyProductPrice(String price) {
         CustomSoftAssert.assertEquals(action.readText(productPrice),price);
+        return this;
+    }
+
+    //Scrolling
+    @Step("Scroll to Product Description")
+    public ProductDetailsPage scrollToProductDescription (Direction direction)
+    {
+        action.swipeIntoScreen(productPrice,direction);
         return this;
     }
 }
