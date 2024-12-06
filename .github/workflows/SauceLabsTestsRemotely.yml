@@ -33,6 +33,7 @@ jobs:
           -DdeviceName="Samsung Galaxy S23 FE"
           -DplatformVersion="13.0"
           -DnativeAutomationDriver="UiAutomator2"
+          -DappName="Android-SauceLabs.apk"
           -Dusername="oauth-jmetwallym-40486"
           -DaccessKey="02b2f4ca-6237-456d-b725-aad1e104ae91"
           -DparallelMode="NONE"

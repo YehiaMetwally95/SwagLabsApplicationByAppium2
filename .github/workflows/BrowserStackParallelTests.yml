@@ -39,6 +39,7 @@ jobs:
           -DdeviceName="Samsung Galaxy S23 Ultra"
           -DplatformVersion="13.0"
           -DnativeAutomationDriver="UiAutomator2"
+          -DappName="994a93f33a6fe87226a08a0eb74f695919d98cd0"
           -Dusername="yehiametwally_pH1Gf8"
           -DaccessKey="cEPMSpKSXqqtZmmWASiB"
           -DparallelMode="METHODS"
