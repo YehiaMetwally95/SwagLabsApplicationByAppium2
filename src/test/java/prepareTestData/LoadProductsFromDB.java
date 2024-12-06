@@ -12,7 +12,7 @@ public class LoadProductsFromDB {
     static String jsonFilePathForLogin = "src/test/resources/TestDataJsonFiles/LoginTestData.json";
     static String jsonFilePathForAddToCart = "src/test/resources/TestDataJsonFiles/AddToCartTestData.json";
     static String jsonFilePathForRemoveFromCart = "src/test/resources/TestDataJsonFiles/RemoveFromCartTestData.json";
-    static String jsonFilePathForCheckout = "src/test/resources/TestDataJsonFiles/CheckoutCartTestData.json";
+    static String jsonFilePathForCheckout = "src/test/resources/TestDataJsonFiles/CheckOutCartTestData.json";
 
     @Description("Load The Latest Products from DB and Update them into Test Data Json Files")
     @Test
