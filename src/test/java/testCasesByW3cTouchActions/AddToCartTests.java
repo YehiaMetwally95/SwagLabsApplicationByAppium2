@@ -39,11 +39,11 @@ public class AddToCartTests extends BaseTest {
                 .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
                 .verifyProductsPageIsOpened()
 
-                .scrollToAddToCartButton(json.getData("Products[2].Name"), DOWN)
-                .addProductToCartByDragAndDrop(json.getData("Products[2].Name"))
+                .scrollToAddToCartButton(json.getData("Products[1].Name"), DOWN)
+                .addProductToCartByDragAndDrop(json.getData("Products[1].Name"))
 
                 .openCartPageFromHeader()
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"));
+                .assertProductIsAddedToCart(json.getData("Products[1.Name"));
     }
 
     @Test
