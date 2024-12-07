@@ -43,7 +43,7 @@ jobs:
           -Dusername="yehiametwally_pH1Gf8"
           -DaccessKey="cEPMSpKSXqqtZmmWASiB"
           -DparallelMode="METHODS"
-          -DthreadCount="4"
+          -DthreadCount="5"
           -DsyncWithDB="true"
           -DSwipeRate="100"
 
