@@ -26,7 +26,7 @@ public class AddToCartTests extends BaseTest {
                 .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
                 .verifyProductsPageIsOpened()
 
-                .scrollToProduct(json.getData("Products[1].Name"),DOWN)
+                .scrollToAddToCartButton(json.getData("Products[1].Name"),DOWN)
                 .addProductToCartByButton(json.getData("Products[1].Name"))
 
                 .openCartPageFromHeader()
@@ -39,7 +39,7 @@ public class AddToCartTests extends BaseTest {
                 .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
                 .verifyProductsPageIsOpened()
 
-                .scrollToProduct(json.getData("Products[2].Name"), DOWN)
+                .scrollToAddToCartButton(json.getData("Products[2].Name"), DOWN)
                 .addProductToCartByDragAndDrop(json.getData("Products[2].Name"))
 
                 .openCartPageFromHeader()
