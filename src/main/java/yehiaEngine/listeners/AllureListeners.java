@@ -2,11 +2,6 @@ package yehiaEngine.listeners;
 
 import io.qameta.allure.listener.FixtureLifecycleListener;
 import io.qameta.allure.model.FixtureResult;
-import org.testng.ITestResult;
-import org.testng.Reporter;
-import yehiaEngine.loggers.AllureReportLogger;
-
-import static yehiaEngine.loggers.LogHelper.logErrorStep;
 
 public class AllureListeners implements FixtureLifecycleListener {
 

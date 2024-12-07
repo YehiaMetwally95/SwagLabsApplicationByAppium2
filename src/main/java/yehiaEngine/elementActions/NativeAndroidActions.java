@@ -3,7 +3,6 @@ package yehiaEngine.elementActions;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.interactions.Actions;
@@ -14,14 +13,10 @@ import yehiaEngine.loggers.LogHelper;
 
 import java.util.List;
 
-import static yehiaEngine.driverManager.AppiumFactory.getDriver;
 import static yehiaEngine.elementActions.Helpers.NativeAndroidActionsHelper.*;
-import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.getCorrectedCoordinates;
-import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.getScreenSize;
 import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.singleFingerSwipe;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getFluentWait;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getSwipeWait;
-import static yehiaEngine.managers.PropertiesManager.getPropertiesValue;
 
 
 public class NativeAndroidActions {

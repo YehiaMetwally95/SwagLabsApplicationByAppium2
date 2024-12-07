@@ -1,9 +1,7 @@
 package yehiaEngine.elementActions.Helpers;
 
-import com.mysql.cj.log.Log;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;

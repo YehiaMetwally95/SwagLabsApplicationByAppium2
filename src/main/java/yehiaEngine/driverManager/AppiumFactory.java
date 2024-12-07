@@ -57,6 +57,7 @@ public class AppiumFactory {
         }catch (Exception e){
             logErrorStep("Failed to Start [" + appName + "]",e);
         }
+
         return driver;
     }
 
@@ -80,15 +81,16 @@ public class AppiumFactory {
         cap.setCapability("appium:udid",deviceUdid);
 
             //Platform Capabilities
-        cap.setCapability("appium:platformVersion",platformVersion);
         cap.setCapability("appium:automationName",nativeAutomationDriver);
 
         if (executionType.equalsIgnoreCase("Local"))
         {
+            cap.setCapability("appium:platformName","Android");
+            cap.setCapability("appium:platformVersion",platformVersion+".0");
+
             //Application Capabilities for Native App
             if (appType.equalsIgnoreCase("NativeAndroid"))
             {
-                cap.setCapability("appium:platformName","Android");
                 cap.setCapability("appium:app", System.getProperty("user.dir")+"\\src\\main\\resources\\apps\\"+appName);
                 cap.setCapability("appium:appActivity",appActivity);
             }
@@ -96,7 +98,8 @@ public class AppiumFactory {
             //Browser Capabilities for Web-Based App
             else if (appType.equalsIgnoreCase("WebAppAndroid"))
             {
-                cap.setCapability("appium:platformName","Android");
+                cap.setCapability("appium:chromedriverAutodownload","true");
+                cap.setCapability("appium:autoWebview","false");
                 cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
                 cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
             }
@@ -104,10 +107,12 @@ public class AppiumFactory {
 
         else if (executionType.equalsIgnoreCase("SauceLabs"))
         {
+            cap.setCapability("appium:platformName","Android");
+            cap.setCapability("appium:platformVersion",platformVersion);
+
             //Application Capabilities for Native App
             if (appType.equalsIgnoreCase("NativeAndroid"))
             {
-                cap.setCapability("appium:platformName","Android");
                 cap.setCapability("appium:app","storage:filename="+appName);
                 cap.setCapability("sauce:options",getSauceLabsCapabilities());
             }
@@ -115,7 +120,8 @@ public class AppiumFactory {
             //Browser Capabilities for Web-Based App
             else if (appType.equalsIgnoreCase("WebAppAndroid"))
             {
-                cap.setCapability("appium:platformName","Android");
+                cap.setCapability("appium:chromedriverAutodownload","true");
+                cap.setCapability("appium:autoWebview","false");
                 cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
                 cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
                 cap.setCapability("sauce:options",getSauceLabsCapabilities());
@@ -124,10 +130,11 @@ public class AppiumFactory {
 
         else if (executionType.equalsIgnoreCase("BrowserStack"))
         {
+            cap.setCapability("appium:platformName","android");
+            cap.setCapability("appium:platformVersion",platformVersion+".0");
             //Application Capabilities for Native App
             if (appType.equalsIgnoreCase("NativeAndroid"))
             {
-                cap.setCapability("platformName","android");
                 cap.setCapability("appium:app","bs://"+appName);
                 cap.setCapability("bstack:options",getBrowserStackCapabilities());
             }
@@ -135,7 +142,8 @@ public class AppiumFactory {
             //Browser Capabilities for Web-Based App
             else if (appType.equalsIgnoreCase("WebAppAndroid"))
             {
-                cap.setCapability("platformName","android");
+                cap.setCapability("appium:chromedriverAutodownload","true");
+                cap.setCapability("appium:autoWebview","false");
                 cap.setCapability(CapabilityType.BROWSER_NAME,browserName);
                 cap.setCapability(CapabilityType.BROWSER_VERSION,browserVersion);
                 cap.setCapability("bstack:options",getBrowserStackCapabilities());
