@@ -45,7 +45,7 @@ jobs:
           -DparallelMode="METHODS"
           -DthreadCount="5"
           -DsyncWithDB="true"
-          -DSwipeRate="100"
+          -DSwipeRate="50"
 
 
       - name: Generate Allure report
