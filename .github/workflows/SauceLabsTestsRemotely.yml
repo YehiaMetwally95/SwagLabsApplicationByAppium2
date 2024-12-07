@@ -38,7 +38,7 @@ jobs:
           -DaccessKey="02b2f4ca-6237-456d-b725-aad1e104ae91"
           -DparallelMode="NONE"
           -DsyncWithDB="false"
-          -DSwipeRate="200"
+          -DSwipeRate="400"
 
       - name: Generate Allure report
         run: mvn allure:report
