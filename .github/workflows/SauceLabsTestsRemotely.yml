@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         continue-on-error: true
         run: >
-          mvn clean test -Dtest="testCasesByW3cTouchActions.CheckoutCart"
+          mvn clean test -Dtest="testCasesByW3cTouchActions.CheckOutCart"
           -DappiumExecutionType="SauceLabs"
           -DAppiumServerURL="https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"
           -DappType="NativeAndroid"
