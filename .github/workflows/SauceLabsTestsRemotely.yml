@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         continue-on-error: true
         run: >
-          mvn clean test -Dtest="testCasesByNativeAndroidActions.CheckOutCart"
+          mvn clean test -Dtest="testCasesByW3cTouchActions.CheckOutCart"
           -DappiumExecutionType="SauceLabs"
           -DAppiumServerURL="https://ondemand.eu-central-1.saucelabs.com:443/wd/hub"
           -DappType="NativeAndroid"
@@ -38,6 +38,7 @@ jobs:
           -DaccessKey="02b2f4ca-6237-456d-b725-aad1e104ae91"
           -DparallelMode="NONE"
           -DsyncWithDB="false"
+          -DSwipeRate="200"
 
       - name: Generate Allure report
         run: mvn allure:report
