@@ -43,8 +43,7 @@ public class ProductsPage extends HomePage {
     public ProductsPage addProductToCartByDragAndDrop(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoScreen(TEXT,productName,VERTICAL)
-                .dragAndDrop(dragButton,dropButton);
+        action.dragAndDrop(dragButton,dropButton,VERTICAL);
         return this;
     }
 
@@ -52,8 +51,7 @@ public class ProductsPage extends HomePage {
     public ProductsPage addProductToCartByButton(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoScreen(TEXT,productName,VERTICAL)
-                .tap(addToCartButton);
+        action.tap(addToCartButton,VERTICAL);
         return this;
     }
 
@@ -61,8 +59,7 @@ public class ProductsPage extends HomePage {
     public ProductsPage removeProductFromCartByButton(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoScreen(TEXT,productName,VERTICAL)
-                .tap(removeFromCartButton);
+        action.tap(removeFromCartButton,VERTICAL);
         return this;
     }
 

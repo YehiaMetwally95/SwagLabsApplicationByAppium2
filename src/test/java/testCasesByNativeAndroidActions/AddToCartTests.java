@@ -64,8 +64,8 @@ public class AddToCartTests extends BaseTest {
                 .openProductDetailsPage(json.getData("Products[1].Name"))
                 .zoomInProductPicture(100)
                 .zoomOutProductPicture(100)
-                .addProductToCart()
                 .verifyProductDetails(json.getData("Products[1].Name"),json.getData("Products[1].Description"),json.getData("Products[1].Price"))
+                .addProductToCart()
                 .openCartPageFromHeader()
                 .assertProductIsAddedToCart(json.getData("Products[1].Name"));
     }

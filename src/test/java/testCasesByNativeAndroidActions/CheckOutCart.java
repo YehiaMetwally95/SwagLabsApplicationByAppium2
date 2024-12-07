@@ -34,9 +34,9 @@ public class CheckOutCart extends BaseTest {
 
                 // Open Cart Page and Assert Products are Added to Cart then Proceed
                 .openCartPageFromHeader()
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[0].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[1].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .proceedToFillUserInfo()
 
                 // Fill User Info and Proceed to Checkout Overview Page
@@ -47,20 +47,20 @@ public class CheckOutCart extends BaseTest {
                 .removeProductFromCartBySwipe(json.getData("Products[0].Name"))
 
                 //Assert Products are Added to Cart then Proceed
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
                 .assertProductIsRemovedFromCart(json.getData("Products[0].Name"))
                 .assertProductIsAddedToCart(json.getData("Products[1].Name"))
+                .assertProductIsAddedToCart(json.getData("Products[2].Name"))
 
                 // Verify Products Info
-                .verifyProductInfo(json.getData("Products[2].Name"), json.getData("Products[2].Price"), json.getData("Products[2].Quantity"), json.getData("Products[2].Description"))
                 .verifyProductInfo(json.getData("Products[1].Name"), json.getData("Products[1].Price"), json.getData("Products[1].Quantity"), json.getData("Products[1].Description"))
+                .verifyProductInfo(json.getData("Products[2].Name"), json.getData("Products[2].Price"), json.getData("Products[2].Quantity"), json.getData("Products[2].Description"))
 
                 // Verify Payment and Shipping Info
                 .verifyPaymentInfo(json.getData("Massages.PaymentInfo"))
                 .verifyShippingMethod(json.getData("Massages.ShippingMethod"))
 
                 // Verify The Total Price
-                .verifyTotalPriceOfProducts(Double.parseDouble(json.getData("Products[2].Price")) + Double.parseDouble(json.getData("Products[1].Price")))
+                .verifyTotalPriceOfProducts(Double.parseDouble(json.getData("Products[1].Price")) + Double.parseDouble(json.getData("Products[2].Price")))
 
                 // Finish CheckOut Cart
                 .finishCartCheckOut()

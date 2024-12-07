@@ -53,9 +53,9 @@ public class AddToCartTests extends BaseTest {
                 .verifyProductsPageIsOpened()
 
                 .addProductToCartByButton(json.getData("Products[0].Name"))
-                .scrollToProduct(json.getData("Products[1].Name"),DOWN)
+                .scrollToAddToCartButton(json.getData("Products[1].Name"),DOWN)
                 .addProductToCartByDragAndDrop(json.getData("Products[1].Name"))
-                .scrollToProduct(json.getData("Products[2].Name"),UP)
+                .scrollToAddToCartButton(json.getData("Products[2].Name"),UP)
                 .addProductToCartByDragAndDrop(json.getData("Products[2].Name"))
 
                 .openCartPageFromHeader()

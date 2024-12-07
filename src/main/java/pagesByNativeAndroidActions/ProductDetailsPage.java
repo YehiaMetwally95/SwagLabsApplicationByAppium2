@@ -31,35 +31,35 @@ public class ProductDetailsPage extends HomePage {
     @Step("Add Product To Cart By Button")
     public ProductDetailsPage addProductToCart()
     {
-        action.tap(ACCESSIBILITY_ID,"test-ADD TO CART",VERTICAL);
+        action.tap(addToCardButton,VERTICAL);
         return this;
     }
 
     @Step("Remove Product From Cart By Button")
     public ProductDetailsPage removeProductFromCart()
     {
-        action.tap(ACCESSIBILITY_ID,"test-REMOVE",VERTICAL);
+        action.tap(removeFromCartButton,VERTICAL);
         return this;
     }
 
     @Step("Zoom In Product Picture")
     public ProductDetailsPage zoomInProductPicture(int distance)
     {
-        action.zoomIn(ACCESSIBILITY_ID,"test-Image Container",VERTICAL,distance);
+        action.zoomIn(productPicture,VERTICAL,distance);
         return this;
     }
 
     @Step("Zoom Out Product Picture")
     public ProductDetailsPage zoomOutProductPicture(int distance)
     {
-        action.zoomOut(ACCESSIBILITY_ID,"test-Image Container",VERTICAL,distance);
+        action.zoomOut(productPicture,VERTICAL,distance);
         return this;
     }
 
     @Step("Return Back To Products Page")
     public ProductsPage returnBackToProductPage()
     {
-        action.tap(ACCESSIBILITY_ID,"test-BACK TO PRODUCTS",VERTICAL);
+        action.tap(backToProductsButton,VERTICAL);
         return new ProductsPage(driver);
     }
 
@@ -75,23 +75,21 @@ public class ProductDetailsPage extends HomePage {
 
     @Step("Verify Product Name")
     public ProductDetailsPage verifyProductName(String name) {
-        String actualName =action.swipeIntoScreen(TEXT,name,VERTICAL)
-                .readText(productName);
+        String actualName =action.readText(productName,VERTICAL);
         CustomSoftAssert.assertEquals(actualName,name);
         return this;
     }
 
     @Step("Verify Product Description")
     public ProductDetailsPage verifyProductDescription(String description) {
-        String actualDescription =action.swipeIntoScreen(ACCESSIBILITY_ID,"test-Description",VERTICAL)
-                .readText(productDescription);
+        String actualDescription =action.readText(productDescription,VERTICAL);
         CustomSoftAssert.assertEquals(actualDescription,description);
         return this;
     }
 
     @Step("Verify Product Price")
     public ProductDetailsPage verifyProductPrice(String price) {
-        String actualPrice =action.readText(ACCESSIBILITY_ID,"test-Price",VERTICAL);
+        String actualPrice =action.readText(productPrice,VERTICAL);
         CustomSoftAssert.assertEquals(actualPrice,price);
         return this;
     }

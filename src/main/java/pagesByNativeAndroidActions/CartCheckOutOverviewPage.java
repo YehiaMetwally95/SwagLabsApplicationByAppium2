@@ -19,7 +19,11 @@ public class CartCheckOutOverviewPage extends HomePage {
     By productPriceLocator;
     By productDescriptionLocator;
     By productQuantityLocator;
+    By productNameLocator;
     By shippingInfoLocator = AppiumBy.xpath("(//*[@text=\"Shipping Information:\"]/following-sibling::android.widget.TextView)[1]");
+    By removeFromCartSwipe = AppiumBy.accessibilityId("test-Delete");
+    By cancelButton = AppiumBy.accessibilityId("test-CANCEL");
+    By finishButton = AppiumBy.accessibilityId("test-FINISH");
 
     //Constructor
     public CartCheckOutOverviewPage(AppiumDriver driver) {
@@ -30,6 +34,7 @@ public class CartCheckOutOverviewPage extends HomePage {
     private void defineLocatorsByProductName(String productName) {
         this.productName = productName;
         productItem = AppiumBy.xpath("//*[@text= '" + productName + "']/ancestor::*[@content-desc='test-Item']");
+        productNameLocator = AppiumBy.xpath("//*[@text= '" + productName + "']");
         productPriceLocator = AppiumBy.xpath("//*[@text= '" + productName + "']/parent::*/following-sibling::*[@content-desc='test-Price']//android.widget.TextView");
         productDescriptionLocator = AppiumBy.xpath("//*[@text= '" + productName + "']/following-sibling::android.widget.TextView");
         productQuantityLocator = AppiumBy.xpath("//*[@text= '" + productName + "']/ancestor::*[@content-desc='test-Description']/preceding-sibling::*[@content-desc='test-Amount']/android.widget.TextView");
@@ -38,7 +43,7 @@ public class CartCheckOutOverviewPage extends HomePage {
     @Step("Return Back to Products Page")
     public ProductsPage returnBackToProductsPage()
     {
-        action.tap(ACCESSIBILITY_ID,"test-CANCEL",VERTICAL);
+        action.tap(cancelButton,VERTICAL);
         return new ProductsPage(driver);
     }
 
@@ -46,15 +51,16 @@ public class CartCheckOutOverviewPage extends HomePage {
     public CartCheckOutOverviewPage removeProductFromCartBySwipe(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.swipeIntoScreen(TEXT, productName, VERTICAL)
-                .tap(ACCESSIBILITY_ID,"test-Delete",HORIZONTAL,TEXT,productName);
+        action
+                .swipeIntoScreen(TEXT,productName,VERTICAL)
+                .tap(removeFromCartSwipe,HORIZONTAL,productNameLocator);
         return this;
     }
 
     @Step("Finish Cart Checkout")
     public CartCheckOutCompletePage finishCartCheckOut()
     {
-        action.tap(ACCESSIBILITY_ID,"test-FINISH",VERTICAL);
+        action.tap(finishButton,VERTICAL);
         return new CartCheckOutCompletePage(driver);
     }
 
@@ -62,14 +68,14 @@ public class CartCheckOutOverviewPage extends HomePage {
     @Step("Assert Product Is Added To Cart")
     public CartCheckOutOverviewPage assertProductIsAddedToCart(String productName) {
         defineLocatorsByProductName(productName);
-        CustomAssert.assertTrue(action.isElementDisplayed(TEXT, productName, VERTICAL));
+        CustomAssert.assertTrue(action.isElementDisplayed(TEXT,productName, VERTICAL));
         return this;
     }
 
     @Step("Assert Product Is Removed To Cart")
     public CartCheckOutOverviewPage assertProductIsRemovedFromCart(String productName) {
         defineLocatorsByProductName(productName);
-        CustomAssert.assertTrue(action.isElementNotDisplayed(TEXT, productName, VERTICAL));
+        CustomAssert.assertTrue(action.isElementNotDisplayed(TEXT,productName, VERTICAL));
         return this;
     }
 
@@ -85,9 +91,7 @@ public class CartCheckOutOverviewPage extends HomePage {
     @Step("Verify Product Price")
     private CartCheckOutOverviewPage verifyProductPrice(String productName, String price) {
         defineLocatorsByProductName(productName);
-        String actualPrice = action
-                .swipeIntoScreen(TEXT,productName,VERTICAL)
-                .readText(productPriceLocator).split("\\$",2)[1];
+        String actualPrice = action.readText(productPriceLocator,VERTICAL).split("\\$",2)[1];
         CustomSoftAssert.assertEquals(actualPrice,price);
         return this;
     }
@@ -95,18 +99,14 @@ public class CartCheckOutOverviewPage extends HomePage {
     @Step("Verify Product Quantity")
     private CartCheckOutOverviewPage verifyProductQuantity(String productName, String quantity) {
         defineLocatorsByProductName(productName);
-        CustomSoftAssert.assertEquals(action
-                .swipeIntoScreen(TEXT,productName,VERTICAL)
-                .readText(productQuantityLocator),quantity);
+        CustomSoftAssert.assertEquals(action.readText(productQuantityLocator,VERTICAL),quantity);
         return this;
     }
 
     @Step("Verify Product Description")
     private CartCheckOutOverviewPage verifyProductDescription(String productName, String description) {
         defineLocatorsByProductName(productName);
-        CustomSoftAssert.assertEquals(action
-                .swipeIntoScreen(TEXT,productName,VERTICAL)
-                .readText(productDescriptionLocator),description);
+        CustomSoftAssert.assertEquals(action.readText(productDescriptionLocator,VERTICAL),description);
         return this;
     }
 
