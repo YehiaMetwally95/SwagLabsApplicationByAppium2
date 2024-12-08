@@ -2,9 +2,6 @@ name: BrowserStack Parallel Tests
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
 
 jobs:
   Samsung_Ubuntu_Android_Test:
@@ -48,7 +45,7 @@ jobs:
           -DparallelMode="METHODS"
           -DthreadCount="5"
           -DsyncWithDB="true"
-          -DSwipeRate="50"
+          -DSwipeRate="30"
 
       - name: Generate Allure report
         run: mvn allure:report
