@@ -21,7 +21,6 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
 
     @Test
     public void swipeIntoElementHorizontally() {
-        NativeAndroidActions action = new NativeAndroidActions(getDriver(isolatedDriver));
 
         By viewsLocator = AppiumBy.accessibilityId("Views");
         By tabsLocator = AppiumBy.accessibilityId("Tabs");
@@ -34,6 +33,7 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
 
         By massageLocator = AppiumBy.xpath("//android.widget.FrameLayout[@resource-id='android:id/tabcontent']//android.widget.TextView");
 
+        NativeAndroidActions action = new NativeAndroidActions(getDriver(isolatedDriver));
         CustomAssert.assertTrue(
                 action
                         .tap(viewsLocator)
@@ -69,7 +69,6 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
                 .tap(splittingLocator,VERTICAL)
                 .tap(aragonLocator2,VERTICAL,swipedElementLocatorListTwo)
                 .tap(cabocLocator2,VERTICAL,swipedElementLocatorListTwo)
-                .tap(aragonLocator2,VERTICAL,swipedElementLocatorListTwo)
                 .tap(baladiLocator1,VERTICAL,swipedElementLocatorListOne)
                 .tap(cabocLocator1,VERTICAL,swipedElementLocatorListOne);
     }
@@ -108,6 +107,8 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
         By splittingLocator = AppiumBy.accessibilityId("Splitting Touches across Views");
         By swipedElementLocatorListOne = AppiumBy.id("io.appium.android.apis:id/list1");
         By swipedElementLocatorListTwo = AppiumBy.id("io.appium.android.apis:id/list2");
+        By boursinLocator1 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list1']/*[@text='Boursin']");
+        By boursinLocator2 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list2']/*[@text='Boursin']");
         By cabocLocator1 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list1']/*[@text='Caboc']");
         By cabocLocator2 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list2']/*[@text='Caboc']");
         By aragonLocator1 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list1']/*[@text='Aragon']");
@@ -122,9 +123,9 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
                 .tap(viewsLocator)
                 .tap(TEXT,"Splitting Touches across Views",VERTICAL)
                 .tap(TEXT,"Aragon",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list2")
-                .tap(TEXT,"Caboc",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list2")
-                .tap(TEXT,"Colby",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list2")
+                .tap(TEXT,"Boursin",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list2")
                 .tap(TEXT,"Aragon",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list2")
+                .tap(TEXT,"Boursin",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list2")
 
                 .tap(TEXT,"Acorn",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list1")
                 .tap(TEXT,"Baladi",VERTICAL,RESOURCE_ID,"io.appium.android.apis:id/list1")
