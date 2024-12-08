@@ -4,6 +4,7 @@
 - Using TestNG as the Testing Framework
 - Using Fluent Page Object Model Design Pattern in writing Test script and Page actions, thus chaining the Scenario steps and validations in one line of code
 - Simulating All Mobile Gestures like Tap / Long Tab /Zoom / DragAndDrop/ Swipe, with only one command while Auto Scrolling to the Target Element into view (Scroll into Screen or into Swiped Element)
+- Simulating Swiping Gesture into Screen and into Swiped Element with Android UI Scrollable Class For very smooth and accurate swiping and without using Touch Actions of (x , y Coordinates).
 - Test Data Management such that store All Test data in Json Files and Retrieve the Updated Test Data of Products and Users from MySQL Database
 - Generating Very Detailed Allure Reports with All Scenario Steps And Screenshots for Passed/Hard-Assertion-Failed/Soft-Assertion-Failed Tests and for API Requests and Responses
 - Perform Test Execution Locally and Remotely on Cloud Servers as Browser Stack & Sauce Labs
@@ -54,6 +55,24 @@
 - Test Data Preparation for Live Data like ""UsersData , ProductsData"" by setting Json File for every Test Case which read its data from mysql database using JDBC , And then Before every run, any updates in database will be reflected into Json Files to be used in the next runs
 - Test Data Preparation for Static Data like "Messages, Page Titles, Credit Card Details"" by Filling it Manually on Json Files for every Test & User this data for Validations
 - Test Data Execution by reading test data from Json files whether Json data is represented as Simple Json Object or Nested Json Objects or Array of Json Objects
+
+## Videos
+- Project Overview
+  - https://go.screenpal.com/watch/cZljbrnn0eq
+- Video for Checkout using UI Scrollable Class
+  - [https://drive.google.com/.../1jF2n7oLu_f.../view...]
+- Video for Checkout using W3C Touch Actions
+  - [https://drive.google.com/.../1r4dk12R.../view...]
+- Video for Horizontal Swipe into Element using UI Scrollable Class
+  - [https://drive.google.com/.../14UExwOMiWbXXUfvVCgv.../view...]
+- Video for Vertical Swipe into Element using UI Scrollable Class
+  - [https://drive.google.com/.../1Bs4iqUWZ4VnvjA0NxP4.../view...]
+- Video for Web App "Login"
+  - [https://drive.google.com/.../1LiIMLpyCsPoU7zzVs64.../view...]
+- Video for Run Tests on Sauce Labs through GitHub Actions
+  - [https://go.screenpal.com/watch/cZljoPnn39y]
+- Video for Run Parallel Tests on Browser Stack through GitHub Actions
+  - [https://go.screenpal.com/watch/cZljDHnn0cd]
 
 ## Installation of Appium
 ### You can Check the Installation Steps from the below link
