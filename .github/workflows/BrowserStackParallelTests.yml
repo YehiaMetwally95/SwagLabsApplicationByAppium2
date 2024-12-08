@@ -2,6 +2,9 @@ name: BrowserStack Parallel Tests
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
   Samsung_Ubuntu_Android_Test:

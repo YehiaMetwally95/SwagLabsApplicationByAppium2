@@ -57,6 +57,7 @@ public class AddToCartTests extends BaseTest {
 
     @Test
     public void addProductToCartFromInsideProductDetailsPage() {
+        //test comment
         new LoginPage(getDriver(isolatedDriver))
                 .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
                 .verifyProductsPageIsOpened()
