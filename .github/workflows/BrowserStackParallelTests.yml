@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         continue-on-error: true
         run: >
-          mvn clean test -Dtest="testCasesByNativeAndroidActions.AddToCartTests,testCasesByNativeAndroidActions.CheckOutCart"
+          mvn clean test -Dtest="testCasesByNativeAndroidActions.AddToCartTests,testCasesByNativeAndroidActions.RemoveFromCartTests#removeProductFromCartByButton"
           -DappiumExecutionType="BrowserStack"
           -DAppiumServerURL="http://hub.browserstack.com/wd/hub"
           -DappType="NativeAndroid"
