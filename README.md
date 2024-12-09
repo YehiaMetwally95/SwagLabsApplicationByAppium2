@@ -60,19 +60,19 @@
 - Project Overview
   - https://go.screenpal.com/watch/cZljbrnn0eq
 - Video for Checkout using UI Scrollable Class
-  - [https://drive.google.com/.../1jF2n7oLu_f.../view...]
+  - https://drive.google.com/file/d/1jF2n7oLu_f-hKOwle5nOtBNhqHk76-86/view?usp=sharing
 - Video for Checkout using W3C Touch Actions
-  - [https://drive.google.com/.../1r4dk12R.../view...]
+  - https://drive.google.com/file/d/1r4dk12R-_kOMWZR6RhaPu3Trhza-lWx3/view?usp=sharing
 - Video for Horizontal Swipe into Element using UI Scrollable Class
-  - [https://drive.google.com/.../14UExwOMiWbXXUfvVCgv.../view...]
+  - https://drive.google.com/file/d/14UExwOMiWbXXUfvVCgvxTio01u3-SMgR/view?usp=sharing
 - Video for Vertical Swipe into Element using UI Scrollable Class
-  - [https://drive.google.com/.../1Bs4iqUWZ4VnvjA0NxP4.../view...]
+  - https://drive.google.com/file/d/1Bs4iqUWZ4VnvjA0NxP4o8bayQDsvGf5N/view?usp=sharing
 - Video for Web App "Login"
-  - [https://drive.google.com/.../1LiIMLpyCsPoU7zzVs64.../view...]
+  - https://drive.google.com/file/d/1LiIMLpyCsPoU7zzVs64vHc3QKcokHQtY/view?usp=sharing
 - Video for Run Tests on Sauce Labs through GitHub Actions
-  - [https://go.screenpal.com/watch/cZljoPnn39y]
+  - https://go.screenpal.com/watch/cZljoPnn39y
 - Video for Run Parallel Tests on Browser Stack through GitHub Actions
-  - [https://go.screenpal.com/watch/cZljDHnn0cd]
+  - https://go.screenpal.com/watch/cZljDHnn0cd
 
 ## Installation of Appium
 ### You can Check the Installation Steps from the below link
