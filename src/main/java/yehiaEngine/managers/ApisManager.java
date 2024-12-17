@@ -71,7 +71,7 @@ public class ApisManager {
     }
 
     public static Response MakeAuthRequest(String requestType,String endpoint,Object requestBody,String contentType,
-                                           String authType,String authUser,String authPass, String token) throws JsonProcessingException {
+                                           String authType,String authUser,String authPass, String token) {
        try{
         RestAssured.registerParser("text/html", Parser.JSON);
         RequestSpecification request = RestAssured.given().filter(AllureReportLogger.logApiRequestsToAllureReport());
@@ -104,7 +104,7 @@ public class ApisManager {
 
         else if(authType.equalsIgnoreCase("CookieAuth"))
         {
-            request = request.header("Cookie","token="+token);
+            request = request.header("Cookie",token);
         }
 
         else if(authType.equalsIgnoreCase("X-Auth-Token"))
@@ -200,7 +200,7 @@ public class ApisManager {
 
         else if(authType.equalsIgnoreCase("CookieAuth"))
         {
-            request = request.header("Cookie","token="+token);
+            request = request.header("Cookie",token);
         }
         else if(authType.equalsIgnoreCase("X-Auth-Token"))
         {
@@ -285,8 +285,7 @@ public class ApisManager {
         return response.getHeader(headerName);
     }
 
-    public static Map getResponseCookies(Response response)
-    {
+    public static Map getResponseCookies(Response response) {
         return response.getCookies();
     }
 
@@ -295,14 +294,12 @@ public class ApisManager {
         return response.getTimeIn(timeUnit);
     }
 
-    public static void verifyResponseCode(Response response, int code)
-    {
-        response.then().statusCode(code);
+    public static int getResponseCode(Response response) {
+        return response.statusCode();
     }
 
-    public static void verifyResponseContentType(Response response,String contentType)
-    {
-        response.then().contentType(contentType);
+    public static String getResponseContentType(Response response,String contentType) {
+        return response.getContentType();
     }
 
 }

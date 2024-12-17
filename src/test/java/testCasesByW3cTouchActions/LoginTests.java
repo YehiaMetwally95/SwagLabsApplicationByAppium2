@@ -16,8 +16,8 @@ import static yehiaEngine.utilities.RandomDataGenerator.*;
 public class LoginTests extends BaseTest {
 
     //Variables
-    String jsonFilePathForAddToCart = "src/test/resources/TestDataJsonFiles/LoginTestData.json";
-    JsonManager json = new JsonManager(jsonFilePathForAddToCart);
+    String jsonFilePathForLoginTests = "src/test/resources/TestDataJsonFiles/LoginTestData.json";
+    JsonManager json = new JsonManager(jsonFilePathForLoginTests);
 
     @Test
     public void successfulLogin() {

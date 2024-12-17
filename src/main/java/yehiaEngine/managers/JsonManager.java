@@ -8,7 +8,6 @@ import yehiaEngine.loggers.LogHelper;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class JsonManager {
     }
 
     //Method to Set Key expressed in JsonPath with new value
-    public JsonManager setData(String jsonPath, String value) throws IOException {
+    public JsonManager setData(String jsonPath, String value) {
         try {
             // Read the Json File and convert it to Json String
             String jsonString = readJsonFile(filePath).toString();

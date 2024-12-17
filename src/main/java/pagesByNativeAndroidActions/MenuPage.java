@@ -13,6 +13,7 @@ public class MenuPage {
 
     //Locators
     By logoutLocator = AppiumBy.accessibilityId("test-LOGOUT");
+    By webViewLocator = AppiumBy.accessibilityId("test-WEBVIEW");
 
     //Constructor
     public MenuPage(AppiumDriver driver) {
@@ -26,6 +27,13 @@ public class MenuPage {
     {
         action.tap(logoutLocator);
         return new LoginPage(driver);
+    }
+
+    @Step("Navigate To WebView Page")
+    public WebViewPage NavigateToWebViewPage()
+    {
+        action.tap(webViewLocator);
+        return new WebViewPage(driver);
     }
 
 }

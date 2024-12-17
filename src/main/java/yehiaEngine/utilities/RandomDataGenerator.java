@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class RandomDataGenerator {
 
@@ -62,11 +63,26 @@ public class RandomDataGenerator {
         return new Faker().lorem().sentence();
     }
 
-    public static String generateItemFromList(List<String> list)
+    public static String generatePreviousDate()
+    {
+        Date pastDate = new Faker().date().past(50, TimeUnit.DAYS);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(pastDate);
+    }
+
+    public static String generateFutureDate()
+    {
+        Date futureDate = new Faker().date().future(50, TimeUnit.DAYS);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(futureDate);
+    }
+
+    public static <T> T generateItemFromList(List<T> list)
     {
         int randomIndex = new Random().nextInt(list.size());
         return list.get(randomIndex);
     }
+
 
     public static String generateNumericalString (int min,int max)
     {
