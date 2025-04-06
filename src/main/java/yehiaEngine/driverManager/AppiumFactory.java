@@ -42,6 +42,7 @@ public class AppiumFactory {
     private static final String appName = System.getProperty("appName");
     private static final String appPackageName = System.getProperty("appPackageName");
     private static final String appActivity = System.getProperty("appActivity");
+    private static final String bundleId = System.getProperty(("bundleId"));
     private static final String appiumURL = System.getProperty("AppiumServerURL");
     private static final String username = System.getProperty("username");
     private static final String accessKey = System.getProperty("accessKey");
@@ -417,7 +418,13 @@ public class AppiumFactory {
             //Application Capabilities for Native App
             if (appType.equalsIgnoreCase("NativeIOS"))
             {
-                options.setApp(System.getProperty("user.dir")+"/src/main/resources/apps/"+appName);
+                if (!appName.isEmpty()) {
+                    options.setApp(System.getProperty("user.dir")+"/src/main/resources/apps/"+appName);
+                }
+
+                else if (!bundleId.isEmpty()) {
+                    options.setBundleId(bundleId);
+                }
             }
 
             //Browser Capabilities for Web-Based App

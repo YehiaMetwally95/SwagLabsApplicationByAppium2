@@ -10,7 +10,6 @@ import yehiaEngine.loggers.LogHelper;
 import java.time.Duration;
 import java.util.List;
 
-import static org.openqa.selenium.interactions.PointerInput.Kind.TOUCH;
 import static org.openqa.selenium.interactions.PointerInput.Origin.viewport;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getFluentWait;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getSwipeWait;

@@ -1,6 +1,5 @@
 package yehiaEngine.elementActions;
 
-import com.github.javafaker.App;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -346,7 +345,6 @@ public class NativeAndroidActions {
 
                 param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
                         getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
-                param.put("duration", 2000);
 
                 Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
 
@@ -379,7 +377,6 @@ public class NativeAndroidActions {
                 Map<String, Object> param = new HashMap<>();
 
                 param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
-                param.put("duration", 2000);
 
                 Dimension elementSize = getElementSize(driver.findElement(locator));
 
@@ -412,7 +409,6 @@ public class NativeAndroidActions {
 
                 param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
                         getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
-                param.put("duration", 2000);
 
                 Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
 
@@ -448,8 +444,6 @@ public class NativeAndroidActions {
 
                 param.put("x",elementSize.getWidth()/2);
                 param.put("y",elementSize.getHeight()/2);
-
-                param.put("duration", 2000);
 
                 driver.executeScript("mobile: doubleClickGesture", param);
                 return true;
