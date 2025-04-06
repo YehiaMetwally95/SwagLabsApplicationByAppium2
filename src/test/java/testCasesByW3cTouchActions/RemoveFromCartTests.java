@@ -8,8 +8,8 @@ import pagesByW3cTouchActions.LoginPage;
 import baseTest.BaseTest;
 import yehiaEngine.managers.JsonManager;
 import static yehiaEngine.driverManager.AppiumFactory.*;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.UP;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.DOWN;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.UP;
 
 @Epic("SwagLabs Android App")
 @Feature("Cart")

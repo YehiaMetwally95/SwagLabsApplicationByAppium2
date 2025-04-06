@@ -6,13 +6,13 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomAssert;
 import yehiaEngine.assertions.CustomSoftAssert;
-import yehiaEngine.elementActions.W3CTouchActions;
+import yehiaEngine.elementActions.W3CFingerActions;
 
 public class LoginPage{
 
     //Variables
     AppiumDriver driver;
-    W3CTouchActions action;
+    W3CFingerActions action;
 
     //Locators
     By usernameTextBox = AppiumBy.accessibilityId("test-Username");
@@ -24,7 +24,7 @@ public class LoginPage{
     public LoginPage(AppiumDriver driver)
     {
         this.driver = driver;
-        action = new W3CTouchActions(driver);
+        action = new W3CFingerActions(driver);
     }
 
     //Actions

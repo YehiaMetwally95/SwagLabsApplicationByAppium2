@@ -1,9 +1,14 @@
 package yehiaEngine.elementActions;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
@@ -16,12 +21,12 @@ import java.util.List;
 
 import static org.openqa.selenium.interactions.PointerInput.Kind.TOUCH;
 import static org.openqa.selenium.interactions.PointerInput.Origin.viewport;
-import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.*;
+import static yehiaEngine.elementActions.Helpers.W3CFingerActionsHelper.*;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getFluentWait;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getSwipeWait;
 import static yehiaEngine.managers.PropertiesManager.getPropertiesValue;
 
-public class W3CTouchActions {
+public class W3CFingerActions {
     AppiumDriver driver;
 
     @AllArgsConstructor
@@ -32,11 +37,11 @@ public class W3CTouchActions {
         UP(0, 1),
         DOWN(0, -1);
 
-        private int x;
-        private int y;
+        private final int x;
+        private final int y;
     }
 
-    public W3CTouchActions(AppiumDriver driver) {
+    public W3CFingerActions(AppiumDriver driver) {
         this.driver = driver;
     }
 
@@ -44,7 +49,7 @@ public class W3CTouchActions {
      * *********************************  Tap Actions  ****************************************
      */
     // Tap on Button or Link by Swiping into Screen & Log Tapping Action
-    public W3CTouchActions tap(By targetLocator, Direction direction) {
+    public W3CFingerActions tap(By targetLocator, Direction direction) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(targetLocator, direction);
         // Get Element Name
@@ -53,30 +58,21 @@ public class W3CTouchActions {
         checkElementEnabled(driver, targetLocator, elementName);
         //Execute the Tap Action
         try {
-            getFluentWait(driver).until(f -> {
-                new Actions(driver).moveToElement(driver.findElement(targetLocator)).perform();
-                driver.findElement(targetLocator).click();
-                return true;
-            });
-        } catch (ElementNotInteractableException e) {
-            try {
-                getFluentWait(driver).until(f -> {
-                    Point startPoint = getElementCenter(driver, driver.findElement(targetLocator));
-                    Point endPoint = null;
-                    Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
-                    driver.perform(List.of(sequence));
-                    return true;
-                });
-            } catch (Exception ex) {
-                LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", ex);
-            }
+                Point startPoint = getElementCenter(driver, driver.findElement(targetLocator));
+                Point endPoint = null;
+                Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
+                driver.perform(List.of(sequence));
+
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", ex);
+
         }
         LogHelper.logInfoStep("Tapping on Element [" + elementName + "]");
         return this;
     }
 
     //Tap on Button or Link by Swiping into swiped element & Log Tapping Action
-    public W3CTouchActions tap(By targetLocator, Direction direction, By swipedElementLocator) {
+    public W3CFingerActions tap(By targetLocator, Direction direction, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(targetLocator, direction, swipedElementLocator);
         // Get Element Name
@@ -86,39 +82,29 @@ public class W3CTouchActions {
 
         //Execute the Tap Action
         try {
-            getFluentWait(driver).until(f -> {
-                new Actions(driver).moveToElement(driver.findElement(targetLocator)).perform();
-                driver.findElement(targetLocator).click();
-                return true;
-            });
-        } catch (ElementNotInteractableException e) {
-            try {
-                getFluentWait(driver).until(f -> {
-                    Point startPoint = getElementCenter(driver, driver.findElement(targetLocator));
-                    Point endPoint = null;
-                    Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
-                    driver.perform(List.of(sequence));
-                    return true;
-                });
-            } catch (Exception ex) {
-                LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", ex);
-            }
+                Point startPoint = getElementCenter(driver, driver.findElement(targetLocator));
+                Point endPoint = null;
+                Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
+                driver.perform(List.of(sequence));
+
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", ex);
         }
         LogHelper.logInfoStep("Tapping on Element [" + elementName + "]");
         return this;
     }
 
     //Tap on Button or Link without Swipe & Log Tapping Action
-    public W3CTouchActions tap(By targetLocator) {
+    public W3CFingerActions tap(By targetLocator) {
         tap(targetLocator, null);
         return this;
     }
 
     /**
-     * *********************************  Long Tab Actions  *************************************
+     * *********************************  Long Tap Actions  *************************************
      */
     //Long Tap on Button or Link by Swiping into Screen & Log Tapping Action
-    public W3CTouchActions longTab(By targetLocator, Direction direction) {
+    public W3CFingerActions longTap(By targetLocator, Direction direction) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(targetLocator, direction);
         // Get Element Name
@@ -128,33 +114,24 @@ public class W3CTouchActions {
 
         //Execute the Long Tap Action
         try {
-            getFluentWait(driver).until(f -> {
                 Point start = getElementCenter(driver, driver.findElement(targetLocator));
                 PointerInput finger = new PointerInput(TOUCH, "finger-1");
                 Sequence sequence = new Sequence(finger, 0);
                 sequence.addAction(finger.createPointerMove(Duration.ofMillis(0), viewport(), start.getX(), start.getY()));
                 sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-                sequence.addAction(new Pause(finger, Duration.ofMillis(1000)));
+                sequence.addAction(new Pause(finger, Duration.ofMillis(2000)));
                 sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
                 driver.perform(List.of(sequence));
-                return true;
-            });
-        } catch (ElementNotInteractableException e) {
-            try {
-                getFluentWait(driver).until(f -> {
-                    new Actions(driver).moveToElement(driver.findElement(targetLocator)).clickAndHold().perform();
-                    return true;
-                });
-            } catch (Exception ex) {
-                LogHelper.logErrorStep("Failed to Long Tap on Element [" + elementName + "]", ex);
-            }
+
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Long Tap on Element [" + elementName + "]", ex);
         }
         LogHelper.logInfoStep("Long Tapping on Element [" + elementName + "]");
         return this;
     }
 
     //Long Tap on Button or Link by Swiping into Element & Log Tapping Action
-    public W3CTouchActions longTab(By targetLocator, Direction direction, By swipedElementLocator) {
+    public W3CFingerActions longTap(By targetLocator, Direction direction, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(targetLocator, direction, swipedElementLocator);
         // Get Element Name
@@ -164,34 +141,265 @@ public class W3CTouchActions {
 
         //Execute the Long Tap Action
         try {
-            getFluentWait(driver).until(f -> {
                 Point start = getElementCenter(driver, driver.findElement(targetLocator));
                 PointerInput finger = new PointerInput(TOUCH, "finger-1");
                 Sequence sequence = new Sequence(finger, 0);
                 sequence.addAction(finger.createPointerMove(Duration.ofMillis(0), viewport(), start.getX(), start.getY()));
                 sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
-                sequence.addAction(new Pause(finger, Duration.ofMillis(1000)));
+                sequence.addAction(new Pause(finger, Duration.ofMillis(2000)));
                 sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
                 driver.perform(List.of(sequence));
-                return true;
-            });
-        } catch (ElementNotInteractableException e) {
-            try {
-                getFluentWait(driver).until(f -> {
-                    new Actions(driver).moveToElement(driver.findElement(targetLocator)).clickAndHold().perform();
-                    return true;
-                });
-            } catch (Exception ex) {
-                LogHelper.logErrorStep("Failed to Long Tap on Element [" + elementName + "]", ex);
-            }
+
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Long Tap on Element [" + elementName + "]", ex);
         }
         LogHelper.logInfoStep("Long Tapping on Element [" + elementName + "]");
         return this;
     }
 
     //Long Tap on Button or Link without Swiping & Log Tapping Action
-    public W3CTouchActions longTab(By targetLocator) {
-        longTab(targetLocator, null);
+    public W3CFingerActions longTap(By targetLocator) {
+        longTap(targetLocator, null);
+        return this;
+    }
+
+    /**
+     * *********************************  Double Tap Actions  *************************************
+     */
+    //Double Tap on Button or Link by Swiping into Screen & Log Tapping Action
+    public W3CFingerActions doubleTap(By targetLocator, Direction direction) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoScreen(targetLocator, direction);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the Double Tap Action
+        try {
+                Point start = getElementCenter(driver, driver.findElement(targetLocator));
+                PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger-1");
+                Sequence sequence = new Sequence(finger, 0);
+                sequence.addAction(finger.createPointerMove(Duration.ofMillis(0), viewport(), start.getX(), start.getY()));
+                sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+                sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+                sequence.addAction(new Pause(finger, Duration.ofMillis(100)));
+                sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+                sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+                driver.perform(List.of(sequence));
+
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", ex);
+        }
+        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Double Tap on Button or Link by Swiping into Element & Log Tapping Action
+    public W3CFingerActions doubleTap(By targetLocator, Direction direction, By swipedElementLocator) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoElement(targetLocator, direction, swipedElementLocator);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the Double Tap Action
+        try {
+                Point start = getElementCenter(driver, driver.findElement(targetLocator));
+                PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger-1");
+                Sequence sequence = new Sequence(finger, 0);
+                sequence.addAction(finger.createPointerMove(Duration.ofMillis(0), viewport(), start.getX(), start.getY()));
+                sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+                sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+            sequence.addAction(new Pause(finger, Duration.ofMillis(100)));
+            sequence.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+                sequence.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+                driver.perform(List.of(sequence));
+
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", ex);
+        }
+        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Double Tap on Button or Link without Swiping & Log Tapping Action
+    public W3CFingerActions doubleTap(By targetLocator) {
+        doubleTap(targetLocator, null);
+        return this;
+    }
+
+    /**
+     * *********************************  Click Actions  ****************************************
+     */
+    // Click on Button or Link by Swiping into Screen & Log click Action
+    public W3CFingerActions click(By targetLocator, Direction direction) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoScreen(targetLocator, direction);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+        //Execute the click Action
+        try {
+            getFluentWait(driver).until(f -> {
+                if (driver instanceof AndroidDriver mydriver) {
+                    new Actions(mydriver).moveToElement(mydriver.findElement(targetLocator)).perform();
+                    mydriver.findElement(targetLocator).click();
+                } else if (driver instanceof IOSDriver mydriver) {
+                    mydriver.findElement(targetLocator).click();
+                }
+                return true;
+            });
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Click on Element [" + elementName + "]", ex);
+        }
+        LogHelper.logInfoStep("Clicking on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Click on Button or Link by Swiping into swiped element & Log click Action
+    public W3CFingerActions click(By targetLocator, Direction direction, By swipedElementLocator) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoElement(targetLocator, direction, swipedElementLocator);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the click Action
+        try {
+            getFluentWait(driver).until(f -> {
+                if (driver instanceof AndroidDriver mydriver) {
+                    new Actions(mydriver).moveToElement(mydriver.findElement(targetLocator)).perform();
+                    mydriver.findElement(targetLocator).click();
+                } else if (driver instanceof IOSDriver mydriver) {
+                    mydriver.findElement(targetLocator).click();
+                }
+                return true;
+            });
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to click on Element [" + elementName + "]", ex);
+
+        }
+        LogHelper.logInfoStep("Clicking on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Click on Button or Link without Swipe & Log Click Action
+    public W3CFingerActions click(By targetLocator) {
+        click(targetLocator, null);
+        return this;
+    }
+
+    /**
+     * *********************************  Long Click Actions  *************************************
+     */
+    //Long Click on Button or Link by Swiping into Screen & Log Tapping Action
+    public W3CFingerActions longClick(By targetLocator, Direction direction) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoScreen(targetLocator, direction);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the Long CLick Action
+        try {
+            getFluentWait(driver).until(f -> {
+                new Actions(driver).moveToElement(driver.findElement(targetLocator)).clickAndHold().perform();
+                return true;
+            });
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Long Click on Element [" + elementName + "]", ex);
+        }
+
+        LogHelper.logInfoStep("Long Clicking on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Long Click on Button or Link by Swiping into Element & Log Click Action
+    public W3CFingerActions longClick(By targetLocator, Direction direction, By swipedElementLocator) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoElement(targetLocator, direction, swipedElementLocator);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the Long Click Action
+        try {
+            getFluentWait(driver).until(f -> {
+                new Actions(driver).moveToElement(driver.findElement(targetLocator)).clickAndHold().perform();
+                return true;
+            });
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Long Click on Element [" + elementName + "]", ex);
+
+        }
+        LogHelper.logInfoStep("Long Clicking on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Long Click on Button or Link without Swiping & Log Clicking Action
+    public W3CFingerActions longClick(By targetLocator) {
+        longClick(targetLocator, null);
+        return this;
+    }
+
+    /**
+     * *********************************  Double Click Actions  *************************************
+     */
+    //Long Click on Button or Link by Swiping into Screen & Log Tapping Action
+    public W3CFingerActions doubleClick(By targetLocator, Direction direction) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoScreen(targetLocator, direction);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the Double Click Action
+        try {
+            getFluentWait(driver).until(f -> {
+                new Actions(driver).moveToElement(driver.findElement(targetLocator)).doubleClick().perform();
+                return true;
+            });
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Double Click on Element [" + elementName + "]", ex);
+        }
+
+        LogHelper.logInfoStep("Double Clicking on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Long Click on Button or Link by Swiping into Element & Log Click Action
+    public W3CFingerActions doubleClick(By targetLocator, Direction direction, By swipedElementLocator) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoElement(targetLocator, direction, swipedElementLocator);
+        // Get Element Name
+        String elementName = getElementName(driver, targetLocator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, targetLocator, elementName);
+
+        //Execute the Double Click Action
+        try {
+            getFluentWait(driver).until(f -> {
+                new Actions(driver).moveToElement(driver.findElement(targetLocator)).doubleClick().perform();
+                return true;
+            });
+        } catch (Exception ex) {
+            LogHelper.logErrorStep("Failed to Double Click on Element [" + elementName + "]", ex);
+
+        }
+        LogHelper.logInfoStep("Double Clicking on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Long Click on Button or Link without Swiping & Log Clicking Action
+    public W3CFingerActions doubleClick(By targetLocator) {
+        doubleClick(targetLocator, null);
         return this;
     }
 
@@ -239,7 +447,7 @@ public class W3CTouchActions {
      * *********************************  Type Actions  *************************************
      */
     //Clear TextBox then Typing on it & Log Typing Action "Swipe Into Screen"
-    public W3CTouchActions type(By targetLocator, Direction direction, String text) {
+    public W3CFingerActions type(By targetLocator, Direction direction, String text) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(targetLocator, direction);
         // Get Element Name
@@ -254,7 +462,7 @@ public class W3CTouchActions {
     }
 
     //Clear TextBox then Typing on it & Log Typing Action "Swipe Into Element"
-    public W3CTouchActions type(By targetLocator, Direction direction, String text, By swipedElementLocator) {
+    public W3CFingerActions type(By targetLocator, Direction direction, String text, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(targetLocator, direction, swipedElementLocator);
         // Get Element Name
@@ -269,7 +477,7 @@ public class W3CTouchActions {
     }
 
     //Clear TextBox then Typing on it & Log Typing Action Without Swipe
-    public W3CTouchActions type(By targetLocator, String text) {
+    public W3CFingerActions type(By targetLocator, String text) {
         type(targetLocator, null, text);
         return this;
     }
@@ -308,8 +516,7 @@ public class W3CTouchActions {
                 String[] previousPageSource = {""};
                 final int[] flag = {0};
                 getSwipeWait(driver).until(f -> {
-                    if (flag[0] ==1)
-                    {
+                    if (flag[0] == 1) {
                         Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
                         driver.perform(List.of(sequence));
                     }
@@ -395,8 +602,7 @@ public class W3CTouchActions {
                 String[] previousPageSource = {""};
                 final int[] flag = {0};
                 getSwipeWait(driver).until(f -> {
-                    if (flag[0] ==1)
-                    {
+                    if (flag[0] == 1) {
                         Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
                         driver.perform(List.of(sequence));
                     }
@@ -449,7 +655,7 @@ public class W3CTouchActions {
      * *********************************  Drag & Drop Actions  *************************************
      */
     //Drag the Source Element then Drop it to the Destination Element "Swipe into Screen"
-    public W3CTouchActions dragAndDrop(By targetLocator, By destinationLocator, Direction direction) {
+    public W3CFingerActions dragAndDrop(By targetLocator, By destinationLocator, Direction direction) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(targetLocator, direction);
         // Get Element Name
@@ -476,7 +682,7 @@ public class W3CTouchActions {
     }
 
     //Drag the Source Element then Drop it to the Destination Element "Swipe into Element"
-    public W3CTouchActions dragAndDrop(By targetLocator, By destinationLocator, Direction direction, By swipedElementLocator) {
+    public W3CFingerActions dragAndDrop(By targetLocator, By destinationLocator, Direction direction, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(targetLocator, direction, swipedElementLocator);
         // Get Element Name
@@ -503,7 +709,7 @@ public class W3CTouchActions {
     }
 
     //Drag the Source Element then Drop it to the Destination Element Without Swipe
-    public W3CTouchActions dragAndDrop(By targetLocator, By destinationLocator) {
+    public W3CFingerActions dragAndDrop(By targetLocator, By destinationLocator) {
         dragAndDrop(targetLocator, destinationLocator, null);
         return this;
     }
@@ -512,7 +718,7 @@ public class W3CTouchActions {
      * *********************************  Zoom In Actions  *************************************
      */
     //Zoom In Element by given distance "Swipe into Screen"
-    public W3CTouchActions zoomIn(By targetLocator, Direction direction, int zoomingDistance) {
+    public W3CFingerActions zoomIn(By targetLocator, Direction direction, int zoomingDistance) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(targetLocator, direction);
         // Get Element Name
@@ -549,7 +755,7 @@ public class W3CTouchActions {
     }
 
     //Zoom In Element by given distance "Swipe into Element"
-    public W3CTouchActions zoomIn(By targetLocator, Direction direction, int zoomingDistance, By swipedElementLocator) {
+    public W3CFingerActions zoomIn(By targetLocator, Direction direction, int zoomingDistance, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(targetLocator, direction, swipedElementLocator);
         // Get Element Name
@@ -586,7 +792,7 @@ public class W3CTouchActions {
     }
 
     //Zoom In Element by given distance Without Swipe
-    public W3CTouchActions zoomIn(By targetLocator, int zoomingDistance) {
+    public W3CFingerActions zoomIn(By targetLocator, int zoomingDistance) {
         zoomIn(targetLocator, null, zoomingDistance);
         return this;
     }
@@ -595,7 +801,7 @@ public class W3CTouchActions {
      * *********************************  Zoom Out Actions  *************************************
      */
     //Zoom Out Element by given distance "Swipe into Screen"
-    public W3CTouchActions zoomOut(By targetLocator, Direction direction, int zoomingDistance) {
+    public W3CFingerActions zoomOut(By targetLocator, Direction direction, int zoomingDistance) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(targetLocator, direction);
         // Get Element Name
@@ -632,7 +838,7 @@ public class W3CTouchActions {
     }
 
     //Zoom Out Element by given distance "Swipe into Element"
-    public W3CTouchActions zoomOut(By targetLocator, Direction direction, int zoomingDistance, By swipedElementLocator) {
+    public W3CFingerActions zoomOut(By targetLocator, Direction direction, int zoomingDistance, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(targetLocator, direction, swipedElementLocator);
         // Get Element Name
@@ -669,7 +875,7 @@ public class W3CTouchActions {
     }
 
     //Zoom In Element by given distance Without Swipe
-    public W3CTouchActions zoomOut(By targetLocator, int zoomingDistance) {
+    public W3CFingerActions zoomOut(By targetLocator, int zoomingDistance) {
         zoomOut(targetLocator, null, zoomingDistance);
         return this;
     }
@@ -678,7 +884,34 @@ public class W3CTouchActions {
      * *********************************  Swiping Actions  *************************************
      */
     //Swipe Into Mobile Screen with a given direction till reach the Target Element
-    public W3CTouchActions swipeIntoScreen(By locator, Direction direction) {
+    public W3CFingerActions singleSwipe(By locator, Direction direction) {
+        // If No Swipe Needed, Check if Element is Displayed into View
+            checkElementDisplayed(driver, locator);
+
+            //Create 2 Coordinate Points to Swipe between them
+            Point startPoint;
+            Point endPoint;
+            Dimension screenSize = getScreenSize(driver);
+            var x = screenSize.getWidth() / 2;
+            var y = screenSize.getHeight() / 2;
+            startPoint = new Point(x, y);
+            var a = x + direction.getX() * Integer.parseInt(getPropertiesValue("SwipeDistance"));
+            var b = y + direction.getY() * Integer.parseInt(getPropertiesValue("SwipeDistance"));
+            endPoint = getCorrectedCoordinates(driver, null, new Point(a, b));
+
+            Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
+            driver.perform(List.of(sequence));
+
+            LogHelper.logInfoStep("Single Swiping (" + direction + ") into Screen");
+
+        return this;
+    }
+
+    /**
+     * *********************************  Scrolling Actions  *************************************
+     */
+    //Swipe Into Mobile Screen with a given direction till reach the Target Element
+    public W3CFingerActions swipeIntoScreen(By locator, Direction direction) {
         // If No Swipe Needed, Check if Element is Displayed into View
         if (direction == null)
             checkElementDisplayed(driver, locator);
@@ -704,7 +937,7 @@ public class W3CTouchActions {
     }
 
     //Swipe Into a Scrollable Element with a given direction till reach the Target Element
-    public W3CTouchActions swipeIntoElement(By targetLocator, Direction direction, By swipedElementLocator) {
+    public W3CFingerActions swipeIntoElement(By targetLocator, Direction direction, By swipedElementLocator) {
         // If No Swipe Needed, Check if Element is Displayed into View
         if (direction == null)
             checkElementDisplayed(driver, targetLocator);

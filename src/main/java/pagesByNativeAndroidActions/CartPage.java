@@ -5,6 +5,7 @@ import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomAssert;
+import yehiaEngine.elementActions.NativeAndroidActions;
 
 import static yehiaEngine.elementActions.NativeAndroidActions.LocatorType.*;
 import static yehiaEngine.elementActions.NativeAndroidActions.ScrollDirection.*;
@@ -46,8 +47,9 @@ public class CartPage extends HomePage {
     public CartPage removeProductFromCartBySwipe(String productName) {
         defineLocatorsByProductName(productName);
         action
-                .swipeIntoScreen(TEXT,productName,VERTICAL)
-                .tap(removeFromCartSwipe,HORIZONTAL,productNameLocator);
+                .swipeIntoScreen(productNameLocator,VERTICAL)
+                .singleSwipe(productNameLocator, NativeAndroidActions.Direction.LEFT)
+                .tap(removeFromCartSwipe);
         return this;
     }
 

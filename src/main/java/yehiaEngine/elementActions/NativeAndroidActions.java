@@ -1,23 +1,28 @@
 package yehiaEngine.elementActions;
 
+import com.github.javafaker.App;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper;
+import yehiaEngine.elementActions.Helpers.NativeAndroidActionsHelper;
 import yehiaEngine.loggers.LogHelper;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static yehiaEngine.elementActions.Helpers.NativeAndroidActionsHelper.*;
-import static yehiaEngine.elementActions.Helpers.W3CTouchActionsHelper.singleFingerSwipe;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getFluentWait;
 import static yehiaEngine.elementActions.Helpers.WaitsManager.getSwipeWait;
-
 
 public class NativeAndroidActions {
 
@@ -25,6 +30,17 @@ public class NativeAndroidActions {
 
     public enum ScrollDirection {
         HORIZONTAL, VERTICAL
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public enum Direction {
+        LEFT("left"),
+        RIGHT("right"),
+        UP("up"),
+        DOWN("down");
+
+        private final String x;
     }
 
     public enum LocatorType {
@@ -48,8 +64,22 @@ public class NativeAndroidActions {
         checkElementEnabled(driver, locatorType, locatorValue, elementName);
         //Execute the Tap Action
         try {
-            new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                    getUiAutomatorQuery(locatorType, locatorValue, null)))).click().perform();
+            getFluentWait(driver).until(f ->
+            {
+
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: clickGesture", param);
+                return true;
+            });
         } catch (Exception e) {
             LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", e);
         }
@@ -68,7 +98,21 @@ public class NativeAndroidActions {
 
         //Execute the Tap Action
         try {
-            new Actions(driver).moveToElement(driver.findElement(locator)).click().perform();
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+
+
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+                driver.executeScript("mobile: clickGesture", param);
+
+                return true;
+            });
         } catch (Exception e) {
             LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", e);
         }
@@ -86,9 +130,21 @@ public class NativeAndroidActions {
         checkElementEnabled(driver, locatorType, locatorValue, elementName);
         //Execute the Tap Action
         try {
-            new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                    getUiAutomatorQuery(locatorType, locatorValue, null)))).click().perform();
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
 
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: clickGesture", param);
+                return true;
+            });
         } catch (Exception e) {
             LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", e);
         }
@@ -107,7 +163,20 @@ public class NativeAndroidActions {
 
         //Execute the Tap Action
         try {
-            new Actions(driver).moveToElement(driver.findElement(locator)).click().perform();
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: clickGesture", param);
+                return true;
+            });
         } catch (Exception e) {
             LogHelper.logErrorStep("Failed to Tap on Element [" + elementName + "]", e);
         }
@@ -117,7 +186,7 @@ public class NativeAndroidActions {
 
     //Tap on Button or Link without Swipe & Log Tapping Action
     public NativeAndroidActions tap(By locator) {
-        new W3CTouchActions(driver).tap(locator);
+        new NativeAndroidActions(driver).tap(locator,null);
         return this;
     }
 
@@ -136,8 +205,19 @@ public class NativeAndroidActions {
         try {
             getFluentWait(driver).until(f ->
             {
-                new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction)))).clickAndHold().perform();
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("duration", 2000);
+
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: longClickGesture", param);
+
                 return true;
             });
         } catch (Exception e) {
@@ -157,11 +237,19 @@ public class NativeAndroidActions {
         checkElementEnabled(driver, locator, elementName);
         //Execute the Long Tap Action
         try {
-            getFluentWait(driver).until(f ->
-            {
-                new Actions(driver).moveToElement(driver.findElement(locator)).clickAndHold().perform();
-                return true;
-            });
+
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("duration", 2000);
+
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: longClickGesture", param);
+
         } catch (Exception e) {
             LogHelper.logErrorStep("Failed to Long Tap on Element [" + elementName + "]", e);
         }
@@ -181,8 +269,17 @@ public class NativeAndroidActions {
         try {
             getFluentWait(driver).until(f ->
             {
-                new Actions(driver).moveToElement(driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction)))).clickAndHold().perform();
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("duration", 2000);
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: longClickGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -204,7 +301,17 @@ public class NativeAndroidActions {
         try {
             getFluentWait(driver).until(f ->
             {
-                new Actions(driver).moveToElement(driver.findElement(locator)).clickAndHold().perform();
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("duration", 2000);
+
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: longClickGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -216,7 +323,147 @@ public class NativeAndroidActions {
 
     //Long Tap on Button or Link without Swipe & Log Tapping Action
     public NativeAndroidActions longTap(By locator) {
-        new W3CTouchActions(driver).longTab(locator);
+        new NativeAndroidActions(driver).longTap(locator, null);
+        return this;
+    }
+
+    /**
+     * *********************************  Double Tap Actions  ****************************************
+     */
+    // Double Tap on Button or Link by Swiping into Screen & Log Tapping Action
+    public NativeAndroidActions doubleTap(LocatorType locatorType, String locatorValue, ScrollDirection direction) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoScreen(locatorType, locatorValue, direction);
+        // Get Element Name
+        String elementName = getElementName(driver, locatorType, locatorValue);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, locatorType, locatorValue, elementName);
+        //Execute the Double Tap Action
+        try {
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("duration", 2000);
+
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: doubleClickGesture", param);
+
+                return true;
+            });
+        } catch (Exception e) {
+            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
+        }
+        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
+        return this;
+    }
+
+    // Double Tap on Button or Link by Swiping into Screen & Log Tapping Action
+    public NativeAndroidActions doubleTap(By locator, ScrollDirection direction) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoScreen(locator, direction);
+        // Get Element Name
+        String elementName = getElementName(driver, locator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, locator, elementName);
+        //Execute the Double Tap Action
+        try {
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("duration", 2000);
+
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: doubleClickGesture", param);
+                return true;
+            });
+        } catch (Exception e) {
+            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
+        }
+        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Double Tap on Button or Link by Swiping into swiped element & Log Tapping Action
+    public NativeAndroidActions doubleTap(LocatorType locatorType, String locatorValue, ScrollDirection direction, LocatorType swipedElementLocatorType, String swipedElementLocatorValue) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoElement(locatorType, locatorValue, direction, swipedElementLocatorType, swipedElementLocatorValue);
+        // Get Element Name
+        String elementName = getElementName(driver, locatorType, locatorValue);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, locatorType, locatorValue, elementName);
+        //Execute the Double Tap Action
+        try {
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("duration", 2000);
+
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQuery(locatorType,locatorValue,null))));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                driver.executeScript("mobile: doubleClickGesture", param);
+                return true;
+            });
+        } catch (Exception e) {
+            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
+        }
+        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Double Tap on Button or Link by Swiping into swiped element & Log Tapping Action
+    public NativeAndroidActions doubleTap(By locator, ScrollDirection direction, By swipedElementLocator) {
+        //Swipe "if needed" Till Element is Displayed into View
+        swipeIntoElement(locator, direction, swipedElementLocator);
+        // Get Element Name
+        String elementName = getElementName(driver, locator);
+        //Check if Element is Enabled on Page (Not Disabled)
+        checkElementEnabled(driver, locator, elementName);
+        //Execute the Double Tap Action
+        try {
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+
+                param.put("x",elementSize.getWidth()/2);
+                param.put("y",elementSize.getHeight()/2);
+
+                param.put("duration", 2000);
+
+                driver.executeScript("mobile: doubleClickGesture", param);
+                return true;
+            });
+        } catch (Exception e) {
+            LogHelper.logErrorStep("Failed to Double Tap on Element [" + elementName + "]", e);
+        }
+        LogHelper.logInfoStep("Double Tapping on Element [" + elementName + "]");
+        return this;
+    }
+
+    //Double Tap on Button or Link without Swipe & Log Tapping Action
+    public NativeAndroidActions doubleTap(By locator) {
+        new NativeAndroidActions(driver).doubleTap(locator, null);
         return this;
     }
 
@@ -285,7 +532,7 @@ public class NativeAndroidActions {
 
     //Clear TextBox then Typing on it & Log Typing Action "Without Swiping"
     public NativeAndroidActions type(By locator, String text) {
-        new W3CTouchActions(driver).type(locator, text);
+        new NativeAndroidActions(driver).type(locator, null, text);
         return this;
     }
 
@@ -362,7 +609,12 @@ public class NativeAndroidActions {
 
     //Get Text from Element Without Swiping & Log the Text
     public String readText(By locator) {
-        return new W3CTouchActions(driver).readText(locator);
+        return new NativeAndroidActions(driver).readText(locator, null);
+    }
+
+    //Get Toast Text Without Swiping
+    public String readToastText(By locator) {
+        return NativeAndroidActionsHelper.getElementName(driver, locator);
     }
 
     /**
@@ -444,7 +696,7 @@ public class NativeAndroidActions {
             //Wait until Element is Displayed on Page
             getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(locator));
             //Get Element Name
-            String elementName = W3CTouchActionsHelper.getElementName(driver, locator);
+            String elementName = getElementName(driver, locator);
             LogHelper.logInfoStep("The Element [" + elementName + "] is Displayed");
         } catch (TimeoutException e) {
             LogHelper.logInfoStep("The Element located by [" + locator.toString() + "] is not Displayed");
@@ -536,14 +788,14 @@ public class NativeAndroidActions {
     }
 
     // Verify Element is Not Displayed on Page With swipe into Element
-    public boolean isElementNotDisplayed(By locator, ScrollDirection direction,By swipedElementLocator) {
+    public boolean isElementNotDisplayed(By locator, ScrollDirection direction, By swipedElementLocator) {
         // Swipe till Element is Displayed into View or till Timeout or till Reach end of Page
         try {
             String[] previousPageSource = {""};
             final int[] flag = {0};
             getSwipeWait(driver).until(f -> {
                 if (flag[0] == 1) {
-                    driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQueryForward(direction,driver,swipedElementLocator)));
+                    driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQueryForward(direction, driver, swipedElementLocator)));
                 }
 
                 String currentPageSource = driver.getPageSource();
@@ -563,7 +815,7 @@ public class NativeAndroidActions {
             try {
                 String[] previousPageSource = {""};
                 getSwipeWait(driver).until(f -> {
-                    driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQueryBackward(direction,driver,swipedElementLocator)));
+                    driver.findElement(AppiumBy.androidUIAutomator(getUiAutomatorQueryBackward(direction, driver, swipedElementLocator)));
 
                     String currentPageSource = driver.getPageSource();
                     if (currentPageSource.equalsIgnoreCase(previousPageSource[0]))
@@ -600,7 +852,7 @@ public class NativeAndroidActions {
      * *********************************  Zoom In Actions  *************************************
      */
     //Zoom In Element by given distance "Swipe into Screen"
-    public NativeAndroidActions zoomIn(LocatorType locatorType, String locatorValue, ScrollDirection direction, int zoomingDistance) {
+    public NativeAndroidActions zoomIn(LocatorType locatorType, String locatorValue, ScrollDirection direction, double zoomingPercentage) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(locatorType, locatorValue, direction);
         // Get Element Name
@@ -610,26 +862,25 @@ public class NativeAndroidActions {
 
         //Execute the Zoom In Action
         try {
-            getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction))));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+            getFluentWait(driver).until(f ->
+            {
+                Map<String, Object> param = new HashMap<>();
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("percent", zoomingPercentage);
 
-                Sequence sequence1 = singleFingerSwipe("finger-1", start1, end1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", start2, end2);
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null))));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchOpenGesture", param);
+
                 return true;
             });
+
         } catch (Exception e) {
             LogHelper.logErrorStep("Failed to Zoom In the Element [" + targetElementName + "]", e);
         }
@@ -638,7 +889,7 @@ public class NativeAndroidActions {
     }
 
     //Zoom In Element by given distance "Swipe into Screen"
-    public NativeAndroidActions zoomIn(By locator, ScrollDirection direction, int zoomingDistance) {
+    public NativeAndroidActions zoomIn(By locator, ScrollDirection direction, double zoomingPercentage) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(locator, direction);
         // Get Element Name
@@ -649,22 +900,15 @@ public class NativeAndroidActions {
         //Execute the Zoom In Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(locator));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", start1, end1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", start2, end2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchOpenGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -675,7 +919,7 @@ public class NativeAndroidActions {
     }
 
     //Zoom In Element by given distance "Swipe into Element"
-    public NativeAndroidActions zoomIn(LocatorType locatorType, String locatorValue, ScrollDirection direction, int zoomingDistance, LocatorType swipedElementLocatorType, String swipedElementLocatorValue) {
+    public NativeAndroidActions zoomIn(LocatorType locatorType, String locatorValue, ScrollDirection direction, double zoomingPercentage, LocatorType swipedElementLocatorType, String swipedElementLocatorValue) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(locatorType, locatorValue, direction, swipedElementLocatorType, swipedElementLocatorValue);
         // Get Element Name
@@ -686,23 +930,17 @@ public class NativeAndroidActions {
         //Execute the Zoom In Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction))));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null))));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", start1, end1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", start2, end2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchOpenGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -713,7 +951,7 @@ public class NativeAndroidActions {
     }
 
     //Zoom In Element by given distance "Swipe into Element"
-    public NativeAndroidActions zoomIn(By locator, ScrollDirection direction, int zoomingDistance, By swipedElementLocator) {
+    public NativeAndroidActions zoomIn(By locator, ScrollDirection direction, double zoomingPercentage, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(locator, direction, swipedElementLocator);
         // Get Element Name
@@ -724,22 +962,15 @@ public class NativeAndroidActions {
         //Execute the Zoom In Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(locator));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", start1, end1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", start2, end2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchOpenGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -750,8 +981,8 @@ public class NativeAndroidActions {
     }
 
     //Zoom In Element by given distance Without Swipe
-    public NativeAndroidActions zoomIn(By locator, int zoomingDistance) {
-        new W3CTouchActions(driver).zoomIn(locator, zoomingDistance);
+    public NativeAndroidActions zoomIn(By locator, double zoomingPercentage) {
+        new NativeAndroidActions(driver).zoomIn(locator, null, zoomingPercentage);
         return this;
     }
 
@@ -759,7 +990,7 @@ public class NativeAndroidActions {
      * *********************************  Zoom Out Actions  *************************************
      */
     //Zoom Out Element by given distance "Swipe into Screen"
-    public NativeAndroidActions zoomOut(LocatorType locatorType, String locatorValue, ScrollDirection direction, int zoomingDistance) {
+    public NativeAndroidActions zoomOut(LocatorType locatorType, String locatorValue, ScrollDirection direction, double zoomingPercentage) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(locatorType, locatorValue, direction);
         // Get Element Name
@@ -770,23 +1001,17 @@ public class NativeAndroidActions {
         //Execute the Zoom Out Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction))));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null))));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", end1, start1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", end2, start2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchCloseGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -797,7 +1022,7 @@ public class NativeAndroidActions {
     }
 
     //Zoom Out Element by given distance "Swipe into Screen"
-    public NativeAndroidActions zoomOut(By locator, ScrollDirection direction, int zoomingDistance) {
+    public NativeAndroidActions zoomOut(By locator, ScrollDirection direction, double zoomingPercentage) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoScreen(locator, direction);
         // Get Element Name
@@ -808,22 +1033,15 @@ public class NativeAndroidActions {
         //Execute the Zoom Out Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(locator));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", end1, start1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", end2, start2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchCloseGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -834,7 +1052,7 @@ public class NativeAndroidActions {
     }
 
     //Zoom Out Element by given distance "Swipe into Element"
-    public NativeAndroidActions zoomOut(LocatorType locatorType, String locatorValue, ScrollDirection direction, int zoomingDistance, LocatorType swipedElementLocatorType, String swipedElementLocatorValue) {
+    public NativeAndroidActions zoomOut(LocatorType locatorType, String locatorValue, ScrollDirection direction, double zoomingPercentage, LocatorType swipedElementLocatorType, String swipedElementLocatorValue) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(locatorType, locatorValue, direction, swipedElementLocatorType, swipedElementLocatorValue);
         // Get Element Name
@@ -845,23 +1063,17 @@ public class NativeAndroidActions {
         //Execute the Zoom Out Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
-                        getUiAutomatorQuery(locatorType, locatorValue, direction))));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null)))).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(locatorType, locatorValue, null))));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", end1, start1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", end2, start2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchCloseGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -872,7 +1084,7 @@ public class NativeAndroidActions {
     }
 
     //Zoom Out Element by given distance "Swipe into Element"
-    public NativeAndroidActions zoomOut(By locator, ScrollDirection direction, int zoomingDistance, By swipedElementLocator) {
+    public NativeAndroidActions zoomOut(By locator, ScrollDirection direction, double zoomingPercentage, By swipedElementLocator) {
         //Swipe "if needed" Till Element is Displayed into View
         swipeIntoElement(locator, direction, swipedElementLocator);
         // Get Element Name
@@ -883,22 +1095,15 @@ public class NativeAndroidActions {
         //Execute the Zoom Out Action
         try {
             getFluentWait(driver).until(f -> {
-                Point elementCenter = getElementCenter(driver, driver.findElement(locator));
-                Point start1 = new Point(elementCenter.getX() - 50, elementCenter.getY());
-                Point start2 = new Point(elementCenter.getX() + 50, elementCenter.getY());
+                Map<String, Object> param = new HashMap<>();
 
-                var x = start1.getX() + W3CTouchActions.Direction.LEFT.getX() * zoomingDistance;
-                var y = start1.getY() + W3CTouchActions.Direction.LEFT.getY() * zoomingDistance;
-                Point end1 = new Point(x, y);
+                param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+                param.put("percent", zoomingPercentage);
+                Dimension elementSize = getElementSize(driver.findElement(locator));
+                param.put("width",elementSize.getWidth());
+                param.put("height",elementSize.getHeight());
 
-                var a = start1.getX() + W3CTouchActions.Direction.RIGHT.getX() * zoomingDistance;
-                var b = start1.getY() + W3CTouchActions.Direction.RIGHT.getY() * zoomingDistance;
-                Point end2 = new Point(a, b);
-
-                Sequence sequence1 = singleFingerSwipe("finger-1", end1, start1);
-                Sequence sequence2 = singleFingerSwipe("finger-2", end2, start2);
-
-                driver.perform(List.of(sequence1, sequence2));
+                driver.executeScript("mobile: pinchCloseGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -909,8 +1114,8 @@ public class NativeAndroidActions {
     }
 
     //Zoom Out Element by given distance Without Swipe
-    public NativeAndroidActions zoomOut(By locator, int zoomingDistance) {
-        new W3CTouchActions(driver).zoomOut(locator, zoomingDistance);
+    public NativeAndroidActions zoomOut(By locator, double zoomingPercentage) {
+        new NativeAndroidActions(driver).zoomOut(locator, null, zoomingPercentage);
         return this;
     }
 
@@ -930,11 +1135,20 @@ public class NativeAndroidActions {
         //Execute the Drag&Drop Action
         try {
             getFluentWait(driver).until(f -> {
-                Point startPoint = getElementCenter(driver, driver.findElement(targetLocator));
+
+                Dimension elementSize = getElementSize(driver.findElement(targetLocator));
                 Point endPoint = getElementCenter(driver, driver.findElement(destinationLocator));
 
-                Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
-                driver.perform(List.of(sequence));
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(targetLocator)).getId());
+                param.put("startX", elementSize.getWidth()/2);
+                param.put("startY", elementSize.getHeight()/2);
+                param.put("endX", endPoint.getX());
+                param.put("endY", endPoint.getY());
+
+                driver.executeScript("mobile: dragGesture", param);
+
                 return true;
             });
         } catch (Exception e) {
@@ -957,13 +1171,22 @@ public class NativeAndroidActions {
         //Execute the Drag&Drop Action
         try {
             getFluentWait(driver).until(f -> {
-                Point startPoint = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(
                         getUiAutomatorQuery(targetLocatorType, targetLocatorValue, null))));
+
                 Point endPoint = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
                         getUiAutomatorQuery(destinationLocatorType, destinationLocatorValue, null))));
 
-                Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
-                driver.perform(List.of(sequence));
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(targetLocatorType, targetLocatorValue, null)))).getId());
+                param.put("startX", elementSize.getWidth()/2);
+                param.put("startY", elementSize.getHeight()/2);
+                param.put("endX", endPoint.getX());
+                param.put("endY", endPoint.getY());
+
+                driver.executeScript("mobile: dragGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -986,13 +1209,21 @@ public class NativeAndroidActions {
         //Execute the Drag&Drop Action
         try {
             getFluentWait(driver).until(f -> {
-                Point startPoint = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
+                Dimension elementSize = getElementSize(driver.findElement(AppiumBy.androidUIAutomator(
                         getUiAutomatorQuery(targetLocatorType, targetLocatorValue, null))));
                 Point endPoint = getElementCenter(driver, driver.findElement(AppiumBy.androidUIAutomator(
                         getUiAutomatorQuery(destinationLocatorType, destinationLocatorValue, null))));
 
-                Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
-                driver.perform(List.of(sequence));
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(AppiumBy.androidUIAutomator(
+                        getUiAutomatorQuery(targetLocatorType, targetLocatorValue, null)))).getId());
+                param.put("startX", elementSize.getWidth()/2);
+                param.put("startY", elementSize.getHeight()/2);
+                param.put("endX", endPoint.getX());
+                param.put("endY", endPoint.getY());
+
+                driver.executeScript("mobile: dragGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -1015,11 +1246,18 @@ public class NativeAndroidActions {
         //Execute the Drag&Drop Action
         try {
             getFluentWait(driver).until(f -> {
-                Point startPoint = getElementCenter(driver, driver.findElement(targetLocator));
+                Dimension elementSize = getElementSize(driver.findElement(targetLocator));
                 Point endPoint = getElementCenter(driver, driver.findElement(destinationLocator));
 
-                Sequence sequence = singleFingerSwipe("finger-1", startPoint, endPoint);
-                driver.perform(List.of(sequence));
+                Map<String, Object> param = new HashMap<>();
+
+                param.put("elementId", ((RemoteWebElement) driver.findElement(targetLocator)).getId());
+                param.put("startX", elementSize.getWidth()/2);
+                param.put("startY", elementSize.getHeight()/2);
+                param.put("endX", endPoint.getX());
+                param.put("endY", endPoint.getY());
+
+                driver.executeScript("mobile: dragGesture", param);
                 return true;
             });
         } catch (Exception e) {
@@ -1031,12 +1269,35 @@ public class NativeAndroidActions {
 
     //Drag the Source Element then Drop it to the Destination Element Without Swipe
     public NativeAndroidActions dragAndDrop(By targetLocator, By destinationLocator) {
-        new W3CTouchActions(driver).dragAndDrop(targetLocator, destinationLocator);
+        new NativeAndroidActions(driver).dragAndDrop(targetLocator, destinationLocator, null);
         return this;
     }
 
     /**
      * *********************************  Swiping Actions  *************************************
+     */
+    public NativeAndroidActions singleSwipe(By locator, Direction direction) {
+        // If No Swipe Needed, Check if Element is Displayed into View
+        checkElementDisplayed(driver, locator);
+
+        Map<String, Object> param = new HashMap<>();
+        Dimension elementSize = getElementSize(driver.findElement(locator));
+
+        param.put("elementId", ((RemoteWebElement) driver.findElement(locator)).getId());
+        param.put("direction", direction.toString());
+        param.put("width",elementSize.getWidth());
+        param.put("height",elementSize.getHeight());
+        param.put("percent", 0.75);
+
+        driver.executeScript("mobile: swipeGesture", param);
+
+        LogHelper.logInfoStep("Single Swiping (" + direction + ") into Screen");
+
+        return this;
+    }
+
+    /**
+     * *********************************  Scrolling Actions  *************************************
      */
     //Scroll Into Screen till reach a Button or Link in a given direction
     public NativeAndroidActions swipeIntoScreen(LocatorType locatorType, String locatorValue, ScrollDirection direction) {
@@ -1052,7 +1313,6 @@ public class NativeAndroidActions {
         }
         return this;
     }
-
 
     //Scroll Into Screen till reach a Button or Link in a given direction
     public NativeAndroidActions swipeIntoScreen(By locator, ScrollDirection direction) {
@@ -1098,6 +1358,14 @@ public class NativeAndroidActions {
             LogHelper.logInfoStep("Swiping (" + direction + ") into Element [" + swipedElementName + "]");
             swipeTillElementDisplayed(driver, locator, direction, swipedElementLocator);
         }
+        return this;
+    }
+
+    /**
+     * *********************************  Android Keys Actions  *************************************
+     */
+    public NativeAndroidActions pressOnAndroidKey(AndroidKey key) {
+        ((AndroidDriver) driver).pressKey(new KeyEvent(key));
         return this;
     }
 }

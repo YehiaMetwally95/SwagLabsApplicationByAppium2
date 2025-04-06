@@ -6,10 +6,10 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomAssert;
 import yehiaEngine.assertions.CustomSoftAssert;
-import yehiaEngine.elementActions.W3CTouchActions.Direction;
+import yehiaEngine.elementActions.W3CFingerActions.Direction;
 
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.LEFT;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.DOWN;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.LEFT;
 
 public class CartCheckOutOverviewPage extends HomePage{
     //Variables
@@ -54,7 +54,9 @@ public class CartCheckOutOverviewPage extends HomePage{
     public CartCheckOutOverviewPage removeProductFromCartBySwipe(String productName)
     {
         defineLocatorsByProductName(productName);
-        action.tap(removeFromCartSwipe,LEFT,productItem);
+        action.singleSwipe(productItem,LEFT);
+        action.tap(removeFromCartSwipe);
+       // action.tap(removeFromCartSwipe,LEFT,productItem);
         return this;
     }
 

@@ -6,9 +6,9 @@ import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomAssert;
-import yehiaEngine.elementActions.W3CTouchActions.Direction;
+import yehiaEngine.elementActions.W3CFingerActions.Direction;
 
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.*;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.*;
 
 public class CartPage extends HomePage{
 
@@ -46,6 +46,8 @@ public class CartPage extends HomePage{
     public CartPage removeProductFromCartBySwipe(String productName)
     {
         defineLocatorsByProductName(productName);
+        //action.singleSwipe(productItem,LEFT);
+        //action.tap(removeFromCartButton);
         action.tap(removeFromCartSwipe,LEFT,productItem);
         return this;
     }
@@ -53,7 +55,7 @@ public class CartPage extends HomePage{
     @Step("Proceed To Fill User Info")
     public CartCheckOutInfoPage proceedToFillUserInfo()
     {
-        action.tap(checkOutButton,DOWN);
+        action.tap(checkOutButton);
         return new CartCheckOutInfoPage(driver);
     }
 

@@ -18,7 +18,7 @@ public class CheckOutCart extends BaseTest {
     JsonManager json = new JsonManager(jsonFilePathForAddToCart);
 
     @Test
-    public void checkOutCart() {
+    public void checkOutCart() throws InterruptedException {
         // Login with Valid Credentials
         new LoginPage(getDriver(isolatedDriver))
                 .loginWithValidUser(json.getData("Users[0].Username"), json.getData("Users[0].Password"))
@@ -28,8 +28,8 @@ public class CheckOutCart extends BaseTest {
                 .addProductToCartByButton(json.getData("Products[0].Name"))
                 .addProductToCartByDragAndDrop(json.getData("Products[1].Name"))
                 .openProductDetailsPage(json.getData("Products[2].Name"))
-                .zoomInProductPicture(100)
-                .zoomOutProductPicture(100)
+                .zoomOutProductPicture(0.2)
+                .zoomInProductPicture(0.1)
                 .addProductToCart()
 
                 // Open Cart Page and Assert Products are Added to Cart then Proceed

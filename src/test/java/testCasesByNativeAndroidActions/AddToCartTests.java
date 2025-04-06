@@ -35,9 +35,9 @@ public class AddToCartTests extends BaseTest {
                 .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
                 .verifyProductsPageIsOpened()
 
-                .addProductToCartByDragAndDrop(json.getData("Products[2].Name"))
+                .addProductToCartByDragAndDrop(json.getData("Products[1].Name"))
                 .openCartPageFromHeader()
-                .assertProductIsAddedToCart(json.getData("Products[2].Name"));
+                .assertProductIsAddedToCart(json.getData("Products[1].Name"));
     }
 
     @Test
@@ -56,15 +56,15 @@ public class AddToCartTests extends BaseTest {
     }
 
     @Test
-    public void addProductToCartFromInsideProductDetailsPage() {
+    public void addProductToCartFromInsideProductDetailsPage() throws InterruptedException {
         //test comment22
         new LoginPage(getDriver(isolatedDriver))
                 .loginWithValidUser(json.getData("Users[0].Username"),json.getData("Users[0].Password"))
                 .verifyProductsPageIsOpened()
 
                 .openProductDetailsPage(json.getData("Products[1].Name"))
-                .zoomInProductPicture(100)
-                .zoomOutProductPicture(100)
+                .zoomOutProductPicture(0.2)
+                .zoomInProductPicture(0.5)
                 .verifyProductDetails(json.getData("Products[1].Name"),json.getData("Products[1].Description"),json.getData("Products[1].Price"))
                 .addProductToCart()
                 .openCartPageFromHeader()

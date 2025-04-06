@@ -7,9 +7,9 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import yehiaEngine.assertions.CustomAssert;
-import yehiaEngine.elementActions.W3CTouchActions;
+import yehiaEngine.elementActions.W3CFingerActions;
 import static yehiaEngine.driverManager.AppiumFactory.*;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.*;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.*;
 
 public class LinearTestsByW3cTouchActions extends BaseTest {
 
@@ -25,7 +25,7 @@ public class LinearTestsByW3cTouchActions extends BaseTest {
         By TAB6Locator = AppiumBy.androidUIAutomator("new UiSelector().text(\"TAB 6\")");
         By textField = AppiumBy.xpath("//android.widget.FrameLayout[@resource-id='android:id/tabcontent']//android.widget.TextView");
 
-        W3CTouchActions action = new W3CTouchActions(getDriver(isolatedDriver));
+        W3CFingerActions action = new W3CFingerActions(getDriver(isolatedDriver));
 
         action.tap(viewsLocator)
                 .tap(tabsLocator,DOWN)
@@ -57,7 +57,7 @@ public class LinearTestsByW3cTouchActions extends BaseTest {
         By acornLocator2 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list2']/*[@text='Acorn']");
         By massageLocator = AppiumBy.xpath("//android.widget.Toast");
 
-        W3CTouchActions action = new W3CTouchActions(getDriver(isolatedDriver));
+        W3CFingerActions action = new W3CFingerActions(getDriver(isolatedDriver));
 
         action.tap(viewsLocator)
                 .tap(splittingLocator, DOWN)
@@ -80,7 +80,7 @@ public class LinearTestsByW3cTouchActions extends BaseTest {
         By spinner = AppiumBy.androidUIAutomator("new UiSelector().resourceId(\"io.appium.android.apis:id/spinner\")");
         By groupsOption = AppiumBy.androidUIAutomator("new UiSelector().text(\"Groups\")");
 
-        W3CTouchActions action = new W3CTouchActions(getDriver(isolatedDriver));
+        W3CFingerActions action = new W3CFingerActions(getDriver(isolatedDriver));
         action.tap(app)
                 .tap(menu)
                 .tap(inflate)

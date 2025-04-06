@@ -281,9 +281,9 @@ public class NativeAndroidActionsHelper {
     public static String getUiAutomatorQueryForward(NativeAndroidActions.ScrollDirection direction)
     {
         if (direction == NativeAndroidActions.ScrollDirection.VERTICAL)
-            return "new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollForward(90)";
+            return "new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollForward(55)";
         else if (direction == NativeAndroidActions.ScrollDirection.HORIZONTAL)
-            return "new UiScrollable(new UiSelector()).setAsHorizontalList().scrollForward(90)";
+            return "new UiScrollable(new UiSelector()).setAsHorizontalList().scrollForward(55)";
         else
             return null;
     }
@@ -292,9 +292,9 @@ public class NativeAndroidActionsHelper {
     public static String getUiAutomatorQueryBackward(NativeAndroidActions.ScrollDirection direction)
     {
         if (direction == NativeAndroidActions.ScrollDirection.VERTICAL)
-            return "new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollBackward(90)";
+            return "new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollBackward(55)";
         else if (direction == NativeAndroidActions.ScrollDirection.HORIZONTAL)
-            return "new UiScrollable(new UiSelector()).setAsHorizontalList().scrollBackward(90)";
+            return "new UiScrollable(new UiSelector()).setAsHorizontalList().scrollBackward(55)";
         else
             return null;
     }
@@ -310,7 +310,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("content-desc").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("content-desc");
-                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(90)";
+                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(55)";
             }
 
 
@@ -319,7 +319,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("resource-id").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("resource-id");
-                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(90)";
+                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("text") != null
@@ -327,7 +327,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("text").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("text");
-                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(90)";
+                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("class") != null
@@ -335,7 +335,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("class").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("class");
-                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(90)";
+                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\").scrollable(true)).scrollForward(55)";
             }
 
             else
@@ -352,7 +352,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("content-desc").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("content-desc");
-                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(90)";
+                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(55)";
             }
 
 
@@ -361,7 +361,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("resource-id").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("resource-id");
-                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(90)";
+                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("text") != null
@@ -369,7 +369,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("text").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("text");
-                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(90)";
+                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("class") != null
@@ -377,7 +377,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("class").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("class");
-                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(90)";
+                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollForward(55)";
             }
 
             else {
@@ -404,7 +404,7 @@ public class NativeAndroidActionsHelper {
                 && !driver.findElement(swipedElementLocator).getDomAttribute("content-desc").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("content-desc");
-                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(55)";
             }
 
 
@@ -413,7 +413,7 @@ public class NativeAndroidActionsHelper {
                    && !driver.findElement(swipedElementLocator).getDomAttribute("resource-id").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("resource-id");
-                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(55)";
             }
 
            else if (driver.findElement(swipedElementLocator).getDomAttribute("text") != null
@@ -421,7 +421,7 @@ public class NativeAndroidActionsHelper {
                    && !driver.findElement(swipedElementLocator).getDomAttribute("text").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("text");
-                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("class") != null
@@ -429,7 +429,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("class").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("class");
-                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\").scrollable(true)).scrollBackward(55)";
             }
 
             else
@@ -448,7 +448,7 @@ public class NativeAndroidActionsHelper {
                 && !driver.findElement(swipedElementLocator).getDomAttribute("content-desc").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("content-desc");
-                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().descriptionMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(55)";
             }
 
 
@@ -457,7 +457,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("resource-id").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("resource-id");
-                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().resourceIdMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("text") != null
@@ -465,7 +465,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("text").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("text");
-                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().textMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(55)";
             }
 
             else if (driver.findElement(swipedElementLocator).getDomAttribute("class") != null
@@ -473,7 +473,7 @@ public class NativeAndroidActionsHelper {
                     && !driver.findElement(swipedElementLocator).getDomAttribute("class").isEmpty())
             {
                 attribute = driver.findElement(swipedElementLocator).getDomAttribute("class");
-                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(90)";
+                return "new UiScrollable(new UiSelector().classNameMatches(\".*" + attribute + "\")).setAsHorizontalList().scrollBackward(55)";
             }
 
             else {
@@ -573,6 +573,11 @@ public class NativeAndroidActionsHelper {
         int x = (size.getWidth() / 2) + location.getX();
         int y = (size.getHeight() / 2) + location.getY();
         return getCorrectedCoordinates(driver,element, new Point(x, y));
+    }
+
+    //Get the Dimensions of Element Size
+    public static Dimension getElementSize(WebElement element) {
+        return element.getSize();
     }
 
     //Get the Center Coordinate of the Element and verify that it's not outside the screen

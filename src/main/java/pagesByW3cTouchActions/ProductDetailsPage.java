@@ -5,9 +5,9 @@ import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import yehiaEngine.assertions.CustomSoftAssert;
-import yehiaEngine.elementActions.W3CTouchActions.Direction;
+import yehiaEngine.elementActions.W3CFingerActions.Direction;
 
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.DOWN;
 
 public class ProductDetailsPage extends HomePage{
 

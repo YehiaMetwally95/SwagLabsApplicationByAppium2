@@ -7,8 +7,8 @@ import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import pagesByW3cTouchActions.LoginPage;
 import static yehiaEngine.driverManager.AppiumFactory.*;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.DOWN;
-import static yehiaEngine.elementActions.W3CTouchActions.Direction.UP;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.DOWN;
+import static yehiaEngine.elementActions.W3CFingerActions.Direction.UP;
 import yehiaEngine.managers.JsonManager;
 
 @Epic("SwagLabs Android App")

@@ -1,17 +1,13 @@
 package linearTests;
 
 import baseTest.BaseTest;
-import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import yehiaEngine.assertions.CustomAssert;
+import yehiaEngine.driverManager.AppiumFactory;
 import yehiaEngine.elementActions.NativeAndroidActions;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static yehiaEngine.driverManager.AppiumFactory.getDriver;
 import static yehiaEngine.elementActions.NativeAndroidActions.LocatorType.*;
@@ -37,6 +33,9 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
         CustomAssert.assertTrue(
                 action
                         .tap(viewsLocator)
+                        .pressOnAndroidKey(AndroidKey.BACK)
+                        .tap(viewsLocator)
+                        .pressOnAndroidKey(AndroidKey.HOME)
                         .tap(tabsLocator,VERTICAL)
                         .tap(scrollableLocator)
                         .tap(TAB3Locator,HORIZONTAL,swipedElementLocator)
@@ -63,14 +62,21 @@ public class LinearTestsByNativeAndroidActions extends BaseTest {
         By baladiLocator1 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list1']/*[@text='Baladi']");
         By baladiLocator2 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list2']/*[@text='Baladi']");
         By acornLocator1 = AppiumBy.xpath("//*[@resource-id='io.appium.android.apis:id/list1']/*[@text='Acorn']");
+        By toastMessage = AppiumBy.xpath("//android.widget.Toast");
 
         action
-                .tap(viewsLocator)
-                .tap(splittingLocator,VERTICAL)
+                .tap(viewsLocator);
+        AppiumFactory.switchToLandscape(getDriver(isolatedDriver));
+        action
+                .tap(splittingLocator,VERTICAL);
+        AppiumFactory.switchToPortrait(getDriver(isolatedDriver));
+
+        System.out.println(action
                 .tap(aragonLocator2,VERTICAL,swipedElementLocatorListTwo)
-                .tap(cabocLocator2,VERTICAL,swipedElementLocatorListTwo)
+                .readToastText(toastMessage));
+/*                .tap(cabocLocator2,VERTICAL,swipedElementLocatorListTwo)
                 .tap(baladiLocator1,VERTICAL,swipedElementLocatorListOne)
-                .tap(cabocLocator1,VERTICAL,swipedElementLocatorListOne);
+                .tap(cabocLocator1,VERTICAL,swipedElementLocatorListOne);*/
     }
 
     @Test

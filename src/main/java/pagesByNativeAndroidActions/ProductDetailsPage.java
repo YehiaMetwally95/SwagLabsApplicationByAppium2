@@ -43,14 +43,13 @@ public class ProductDetailsPage extends HomePage {
     }
 
     @Step("Zoom In Product Picture")
-    public ProductDetailsPage zoomInProductPicture(int distance)
-    {
+    public ProductDetailsPage zoomInProductPicture(double distance) throws InterruptedException {
         action.zoomIn(productPicture,VERTICAL,distance);
         return this;
     }
 
     @Step("Zoom Out Product Picture")
-    public ProductDetailsPage zoomOutProductPicture(int distance)
+    public ProductDetailsPage zoomOutProductPicture(double distance)
     {
         action.zoomOut(productPicture,VERTICAL,distance);
         return this;

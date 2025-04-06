@@ -4,12 +4,12 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import yehiaEngine.elementActions.W3CTouchActions;
+import yehiaEngine.elementActions.W3CFingerActions;
 
 public class HomePage {
     //Variables
     AppiumDriver driver;
-    W3CTouchActions action;
+    W3CFingerActions action;
 
     //Locators
     By menuIcon = AppiumBy.accessibilityId("test-Menu");
@@ -19,7 +19,7 @@ public class HomePage {
     //Constructor
     public HomePage(AppiumDriver driver) {
         this.driver = driver;
-        action = new W3CTouchActions(driver);
+        action = new W3CFingerActions(driver);
     }
 
     //Actions
